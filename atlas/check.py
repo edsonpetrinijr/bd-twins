@@ -18,14 +18,14 @@ mass = m.body_subtreemass[m.body("pelvis").id]
 head = m.geom("head")
 top = d.geom_xpos[head.id][2] + m.geom_size[head.id][0]
 shoulder_z = d.xpos[m.body("left_upper_arm").id][2]
-arm_len = 0.353 + 0.277 + 0.205
+arm_len = 0.28 + 0.28 + 0.16
 reach = shoulder_z + arm_len
 hinges = sum(m.jnt_type == mujoco.mjtJoint.mjJNT_HINGE)
 
 print(f"mass {mass:.2f} kg | height {top:.3f} m | overhead reach {reach:.2f} m | hinge DoF {hinges}")
 assert abs(mass - 90.0) < 0.5
 assert abs(top - 1.9) < 0.03
-assert abs(reach - 2.3) < 0.15  # ponytail: reach definition unknown (overhead vs. arm span); tighten when known
+assert abs(reach - 2.3) < 0.03  # assumes spec 'reach' = overhead reach
 assert hinges == 28  # body only; spec says 56 total, rest assumed in hands
 
 # Standing pose: only the feet touch the floor, no self-collision.

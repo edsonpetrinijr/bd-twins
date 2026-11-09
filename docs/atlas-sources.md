@@ -11,10 +11,23 @@ https://bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf
 - Waist, hip yaw and head spin far past human range (2024 reveal video, "Atlas On a Roll" 09/nov/2026) → `waist_yaw`, `hip_yaw`, `neck_yaw` have no limits.
 - Wheeled version: wheel = ankle joint that spins continuously ("Atlas On a Roll", https://bostondynamics.com/blog/atlas-on-a-roll/).
 
-## Estimates (v0 placeholders, replace with photo/video measurements)
-Segment lengths and masses use human anthropometry (Winter, *Biomechanics and Motor Control of Human Movement*), scaled to H = 1.9 m and m = 90 kg.
+## Measured on spec-sheet photos (v0.1, 09/nov)
+Method: pixel coordinates of joint centers on the spec-sheet renders, scale from a known length. Images extracted with `pdfimages` (not committed).
+- **Side view** (page 2, robot at shelf; sole y=683 px, head top y=120 px → 1.9 m = 563 px, 296 px/m). Legs almost straight (~8-10° bend), lengths corrected for the bend.
+  - ankle joint (blue disc) 625 px → **ankle height 0.196 m** (human ratio gave 0.074: biggest change)
+  - knee 527 px, hip pitch actuator 390 px → **shin 0.336 m**, **thigh 0.467 m**, **hip height 0.999 m**
+  - shoulder ~215 px → **shoulder height 1.58 m**
+  - foot ~95 px long, ankle 37 px from heel → **foot 0.32 m**, ankle ~0.04 m behind foot center
+- **Walking render** (page 1, 433 px/m from 823 px = 1.9 m): hip 0.97 m (matches side view), forearm ~0.28 m, hand ~0.15 m, upper arm ~0.275 m (foreshortened).
+- **Reach 2.3 m** taken as overhead reach → upper arm + forearm + hand = 2.3 − 1.58 = 0.72 m → **0.28 / 0.28 / 0.16 m**. So the reach check now passes by construction, not as an independent test.
+- **Widths (low confidence)**: front render (page 2) is seen from above, head looks bigger. Head ≈ 0.22 m wide, torso ≈ 0.28 m, shoulder joints ±0.20 m, hip joints ±0.09 m (also set so forearm clears thigh).
 
-| Segment | Length | Mass |
+## Still estimates
+Masses use human anthropometry (Winter, *Biomechanics and Motor Control of Human Movement*), scaled to H = 1.9 m and m = 90 kg.
+
+Lengths in this table are the old v0 human values; v0.1 uses the measured ones above.
+
+| Segment | Length (v0, superseded) | Mass |
 |---|---|---|
 | foot (ankle height) | 0.039H = 0.074 m | 1.45% = 1.305 kg |
 | shank | 0.246H = 0.467 m | 4.65% = 4.185 kg |
@@ -26,9 +39,8 @@ Segment lengths and masses use human anthropometry (Winter, *Biomechanics and Mo
 | hand | 0.108H = 0.205 m | 0.6% = 0.54 kg |
 | head | top at 1.9 m | 8.1% = 7.29 kg (robot head likely lighter) |
 
-- Hip joints ±0.10 m, shoulder joints ±0.22 m (widened from 0.21 so the forearm clears the thigh).
 - Joint ranges: human-like guesses, except the unlimited ones above.
 - Kinematics: 28 body DoF (legs 2×6, arms 2×7, waist yaw, neck yaw). The other 28 of the 56 are assumed to be in the hands, waist and neck; not modeled yet.
 
 ## Checks (`atlas/check.py`)
-mass 90.00 kg ✓ · height 1.897 m ✓ · overhead reach 2.39 m vs 2.3 m (reach definition unknown) · feet are the only contacts at rest · passive drop stays finite.
+mass 90.00 kg ✓ · height 1.899 m ✓ · overhead reach 2.30 m (by construction) · feet are the only contacts at rest · passive drop stays finite.
