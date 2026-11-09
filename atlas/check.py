@@ -16,7 +16,7 @@ mujoco.mj_forward(m, d)
 # Spec sheet: 90 kg, 1.9 m, reach 2.3 m.
 mass = m.body_subtreemass[m.body("pelvis").id]
 head = m.geom("head")
-top = d.geom_xpos[head.id][2] + m.geom_size[head.id][0]
+top = d.geom_xpos[head.id][2] + m.geom_size[head.id][0]  # head collision sphere = ring radius
 shoulder_z = d.xpos[m.body("left_upper_arm").id][2]
 arm_len = 0.31 + 0.28 + 0.16  # upper arm, forearm, hand (fit to p-004 silhouette)
 reach = shoulder_z + arm_len

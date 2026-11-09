@@ -68,3 +68,20 @@ Notes:
 - Shoulder height from the side photo (1.58 m) was biased: arm raised there. Silhouette fit says ~1.51 m.
 - With shoulder 1.51 m and arm 0.31+0.28+0.16 m, overhead fingertip reach = 2.26 m vs spec 2.3 m. Spec does not say how reach is measured.
 - One view only. Widths (head, torso, shoulders, hips) are still checked from a single 3/4 view.
+
+## More references (v0.4, 09/nov)
+Downloaded, not committed (BD copyright). Used only to read shapes and positions.
+- bostondynamics.com images: `atlas-hero-2026-scaled.jpg` (real robot, front), `atlas-render-blog.jpg` (side, hi-res of spec-sheet page 2), `Webinar-March-Atlas-form_and_funtion-Promo_Assets-0226_HP-scaled.png` (3/4 front, standing, best leg detail), `atlas-battery-walk-real-collage-768x1245-1.png` (back 3/4 + front), `atlas-wheels-rl-split-screen.jpg` (BD's own sim render).
+- Frames from "Atlas | Product Features" (YouTube rrUHZKlrxms), e.g. t=25 s (reach line 0→2.3 m = overhead fingertip with arm up), t=73 s (head + shoulders, front).
+- `atlas/views.py` puts each reference next to the model from a similar camera.
+
+What they changed:
+- **Shoulder**: big dark actuator on the top corner of the torso, arm hangs straight below it. Front close-up (head ring Ø ≈ 0.20 m as scale): center 0.227 m below head center → **1.573 m**, lateral ≈ 0.25 m. Used **0.23 m** (0.25 dropped IoU on the 3/4 silhouette; the two disagree by ~2 cm).
+- **Reach 2.3 m** = fingertip with the arm straight up (video frame). Model: 2.32 m.
+- **Torso** wider (±0.175 m), yoke as a broad dark dome, blue belly, ribbed band between, dark ribbed waist below.
+- **Pelvis** = horizontal dark drums (axis y) with ribbed centers; thighs hang from their ends.
+- **Legs**: slim blue thigh with a ribbed dark motor at the back; **knee and ankle = blue drums on the outside** with a dark center; **shin = dark rounded paddle on the inside**, in front of the knee-ankle line; short dark foot.
+- **Hip** spacing 0.13 m (front photo suggests up to 0.16; kept 0.13 so the hanging forearm clears the thigh).
+- Hip yaw/roll moved 0.08 m above the hip pitch axis (front discs sit above the thigh drum). Pelvis-thigh contact excluded (they are no longer parent/child).
+
+IoU after these: 0.82 (was 0.84 at v0.3). Lower on purpose: v0.3 fit one 3/4 silhouette by pushing the shoulder too low; v0.4 follows five views.
