@@ -44,3 +44,9 @@ Lengths in this table are the old v0 human values; v0.1 uses the measured ones a
 
 ## Checks (`atlas/check.py`)
 mass 90.00 kg ✓ · height 1.899 m ✓ · overhead reach 2.30 m (by construction) · feet are the only contacts at rest · passive drop stays finite.
+
+## Visual shell (v0.2, 09/nov)
+Only looks; no effect on physics. Visual geoms are massless, group 2, no collision. Collision geoms (group 3) are unchanged and carry all mass.
+- Shapes and colors read off the spec-sheet renders (pages 1-2): blue shell + dark grey frame, cylinder head with front light ring and antenna, back battery pack with blue light strips, carry handle over the back, ribbed actuators at hip/elbow/lower thigh, blue discs on the outer side of knee and ankle, long dark shin slab, 3 fingers + thumb.
+- Rounded/tapered parts are convex-hull meshes generated in `atlas/build.py` (`shell()`), no mesh files.
+- Part sizes are eyeballed from the renders, side by side with `atlas/render.py`. Not measured to the mm.
