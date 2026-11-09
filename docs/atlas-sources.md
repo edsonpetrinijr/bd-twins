@@ -50,3 +50,21 @@ Only looks; no effect on physics. Visual geoms are massless, group 2, no collisi
 - Shapes and colors read off the spec-sheet renders (pages 1-2): blue shell + dark grey frame, cylinder head with front light ring and antenna, back battery pack with blue light strips, carry handle over the back, ribbed actuators at hip/elbow/lower thigh, blue discs on the outer side of knee and ankle, long dark shin slab, 3 fingers + thumb.
 - Rounded/tapered parts are convex-hull meshes generated in `atlas/build.py` (`shell()`), no mesh files.
 - Part sizes are eyeballed from the renders, side by side with `atlas/render.py`. Not measured to the mm.
+
+## Silhouette fit (v0.3, 09/nov)
+The spec-sheet PDF carries an exact alpha mask for the walking render on page 1 (`pdfimages` → `p-004.png`).
+`atlas/compare.py` fits camera + pose to that mask (proportions are not fitted) and reports IoU, total and per band.
+Overlay: white = both, red = only real Atlas (model missing volume), cyan = only model (model extra).
+
+| Round | Change | IoU total | head | torso+arms | legs | feet |
+|---|---|---|---|---|---|---|
+| 0 | v0.2 | 0.796 | 0.718 | 0.845 | 0.782 | 0.729 |
+| 1 | shorter head, thinner backpack, chest/belly forward, longer sole, wider shin | 0.808 | 0.745 | 0.866 | 0.775 | 0.754 |
+| 2 | **shoulder joint 0.521 → 0.45 above waist (world 1.51 m), upper arm 0.28 → 0.31** (sweep, best of 12) | 0.835 | 0.775 | 0.883 | 0.830 | 0.724 |
+| 3 | head forward, handle as U over the back, bulkier upper arm/elbow, shin slab forward | 0.833 | 0.880 | 0.865 | 0.820 | 0.717 |
+| 4 | shorter handle, bigger elbow, taller blue belly, blue battery modules on back (seen on page 1 back view), thicker neck | 0.837 | 0.882 | 0.871 | 0.821 | 0.723 |
+
+Notes:
+- Shoulder height from the side photo (1.58 m) was biased: arm raised there. Silhouette fit says ~1.51 m.
+- With shoulder 1.51 m and arm 0.31+0.28+0.16 m, overhead fingertip reach = 2.26 m vs spec 2.3 m. Spec does not say how reach is measured.
+- One view only. Widths (head, torso, shoulders, hips) are still checked from a single 3/4 view.
