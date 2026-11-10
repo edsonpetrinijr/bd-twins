@@ -1,0 +1,3 @@
+mujoco
+pillow
+mjlab @ git+https://github.com/boston-dynamics/mjlab@c2e1e06400e309b6897a536693fe5d2aa772c5b2

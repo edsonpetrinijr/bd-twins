@@ -85,3 +85,33 @@ What they changed:
 - Hip yaw/roll moved 0.08 m above the hip pitch axis (front discs sit above the thigh drum). Pelvis-thigh contact excluded (they are no longer parent/child).
 
 IoU after these: 0.82 (was 0.84 at v0.3). Lower on purpose: v0.3 fit one 3/4 silhouette by pushing the shoulder too low; v0.4 follows five views.
+
+## Mass (v0.5, 09/nov)
+No public breakdown. Per-body estimates, sum = spec-sheet 90 kg. Inside each body, mass is spread over its visual shells (inertia and COM follow the shapes), battery packs 2.5x denser than the rest of the torso. Frozen as explicit `<inertial>` in the XML.
+
+| Body | kg | Why |
+|---|---|---|
+| torso | 36 | 2 battery packs (4 h runtime), compute, waist actuator |
+| pelvis | 8 | hip actuators + frame |
+| head | 4 | cameras, lights, neck |
+| hip (x2) | 0.6 | link between hip roll and pitch |
+| thigh (x2) | 8.5 | knee actuator lives in the thigh (heavy near the hip, like most legged robots) |
+| shin (x2) | 4 | ankle actuators |
+| foot (x2) | 1.5 | |
+| upper arm (x2) | 3.2 | elbow + shoulder yaw actuators |
+| forearm (x2) | 2.0 | wrist actuators |
+| hand (x2) | 1.2 | 3 fingers + thumb with motors |
+
+First try (uniform density over the shells) gave a 7 kg shin and a 4 kg forearm with a 4 kg thigh: shapes alone put mass far from the hips, which no real legged robot does. Replaced by the table above.
+
+## Actuators (v0.6, 09/nov) — estimates
+`atlas/atlas_mjlab.py`. No public torque numbers. Sized from the spec-sheet loads plus margin for the dynamic moves in BD videos (jumps, flips):
+- Knee/hip pitch: deep squat with 50 kg "instant" load, 140 kg total, ~0.25 m lever, two legs → ~170 Nm; x2.5 for jumps → **400 Nm**.
+- Shoulder pitch/roll: 20 kg one-handed at ~0.7 m + arm weight → ~160 Nm → **200 Nm**.
+- Others scaled down: hip roll 300, ankle pitch 250, waist 200, hip yaw 150, elbow 120, ankle roll 120, shoulder yaw 100, wrist 30, neck 10 Nm.
+- Reflected inertia 0.002–0.1 kg m²; PD gains from it (10 Hz, damping ratio 2), the mjlab convention.
+
+## mjlab (v0.6)
+- `atlas/atlas_mjlab.py` registers `Mjlab-Velocity-Flat-BD-Atlas` and `Mjlab-Velocity-Rough-BD-Atlas` on mjlab's velocity-tracking task.
+- Smoke test on Mac CPU: env builds, 28 actions, 200 steps with zero action, no NaN, no fall. Pelvis sags 5–10 cm with zero action (PD at 10 Hz is soft under 90 kg); a trained policy compensates.
+- mjlab pinned to the BD fork commit in `requirements.txt`.

@@ -2,11 +2,11 @@
 id: bd-twins
 status: active
 updated: 2026-11-09
-stopped_at: v0.4, estrutura com 5 vistas
-next: Edson avaliar v0.4 (views.py)
+stopped_at: v0.6 roda no mjlab (Mac, CPU)
+next: Treinar Flat no Makerspace (GPU)
 tasks:
   - Casca visual mais fiel (mesh)
-  - Plugar no mjlab (constants + atuadores)
+  - Treinar Flat-BD-Atlas na GPU
   - Modelo do Stretch
 ---
 
@@ -25,3 +25,4 @@ Atlas v0.1 do zero: 28 DoF de corpo. Pernas e braços medidos nas fotos do spec 
 - 2026-11-09 · v0.2: casca visual (formas arredondadas, cores, cabeça com anel, mochila, mão de 3 dedos). `atlas/build.py` gera o XML; `atlas/render.py` compara com as fotos. Versão com rodas descartada pelo Edson.
 - 2026-11-09 · v0.3: `atlas/compare.py` compara com a máscara oficial do render (IoU 0.796 → 0.837 em 4 rodadas). Maior achado: ombro mais baixo (1,51 m) e braço mais longo.
 - 2026-11-09 · v0.4: ombro, tronco, pelve e pernas refeitos com fotos do site da BD + frames do vídeo de produto. `atlas/views.py` compara 5 vistas lado a lado.
+- 2026-11-09 · v0.5/v0.6: massa por corpo (estimativa documentada) com inércia das cascas; atuadores estimados; tarefas `Mjlab-Velocity-{Flat,Rough}-BD-Atlas`. Teste no Mac: 200 passos sem NaN nem queda.
