@@ -24,6 +24,8 @@ python atlas/joints_check.py                           # joints sit on their act
 python atlas/demo.py --routine limits --video out.mp4  # 40 s range-of-motion demo, no policy
 python atlas/train.py train Mjlab-Velocity-Flat-BD-Atlas --env.scene.num-envs 4096
 python atlas/train.py play  Mjlab-Velocity-Flat-BD-Atlas
+# carry: policy drives the 12 leg joints; waist yaw + arms are an external command, box 0.1-20 kg on the chest
+python atlas/train.py Mjlab-Velocity-Carry-BD-Atlas --env.scene.num-envs 4096
 ```
 Fleet demo (kinematic robots, real box physics, MuJoCo 4): 2 Stretch unload two trailers, 2 Atlas carry boxes to a conveyor (MuJoCo 4 `surfacevel` belt), 2 Spot patrol. The fleet manager (`fleet/manager.py`: shared grid map, A*, task queue, traffic priority with detours, replanning on a blocked aisle or a dropped box) runs the mission; Atlas turns its torso (continuous waist) to face the pallet and the belt while its legs keep the path heading.
 ```

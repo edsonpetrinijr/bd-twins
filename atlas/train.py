@@ -2,6 +2,7 @@
 
 import sys
 
+import atlas_carry  # noqa: F401  (registers the carry task)
 import atlas_mjlab  # noqa: F401  (registers the tasks)
 
 mode = sys.argv.pop(1) if len(sys.argv) > 1 and sys.argv[1] in ("train", "play") else "train"
