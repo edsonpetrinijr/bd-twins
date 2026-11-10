@@ -1,6 +1,6 @@
 # bd-twins
 
-Electric Atlas (2026) in MuJoCo / mjlab, built only from public data (spec sheet, photos, videos). Every number and its source: `docs/atlas-sources.md`.
+Boston Dynamics robots in MuJoCo / mjlab: electric Atlas (2026) and Spot (`spot/`, v0; sources in `docs/spot-sources.md`). Electric Atlas, built only from public data (spec sheet, photos, videos). Every number and its source: `docs/atlas-sources.md`.
 
 Personal project, not affiliated with or endorsed by Boston Dynamics. "Atlas" is a Boston Dynamics trademark, used here only to name the robot being modeled. Geometry, masses and actuator numbers are my own estimates from public material; no Boston Dynamics CAD, images or software are included.
 
