@@ -26,7 +26,7 @@ def g(kind, cls="visual", **kw):
     return f'<geom class="{cls}" type="{kind}" {attrs}/>'
 
 
-def shell(name, z0, z1, top, bot, r, material="shell", pos="0 0 0"):
+def shell(name, z0, z1, top, bot, r, material="shell", pos="0 0 0", **kw):
     """Rounded, tapered box as a convex-hull mesh: half-sizes `bot` at z0, `top` at z1, corner radius r."""
     if name not in MESHES:
         pts = []
@@ -40,7 +40,7 @@ def shell(name, z0, z1, top, bot, r, material="shell", pos="0 0 0"):
                     cy = math.copysign(hy - r, math.sin(a))
                     pts.append((cx + rr * math.cos(a), cy + rr * math.sin(a), zc + sgn * dz))
         MESHES[name] = " ".join(f"{v:.4f}" for p in pts for v in p)
-    return g("mesh", mesh=name, material=material, pos=pos)
+    return g("mesh", mesh=name, material=material, pos=pos, **kw)
 
 
 def drum(y0, y1, r, material="frame", x=0.0, z=0.0):
@@ -58,22 +58,22 @@ def leg(s, side):
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <body name="{side}_thigh" pos="0 0 -{HIP_ROLL_DZ}">
           <joint name="{side}_hip_pitch_joint" axis="0 1 0" range="-2.2 0.6"/>
-          {g("capsule", "collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.055", mass="9.0")}
+          {g("capsule", "collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.055")}
           {drum(-s*0.02, s*0.06, 0.07, "frame")}
           {g("cylinder", material="rib", pos=f"0 {s*0.131} 0", euler="1.5708 0 0", size="0.04 0.004")}
           {shell("thigh_shell", -0.40, -0.06, (0.062, 0.052), (0.055, 0.048), 0.03, "shell", f"0.005 {s*0.01} 0")}
           {shell("thigh_motor", -0.40, -0.24, (0.035, 0.042), (0.035, 0.042), 0.015, "rib", f"-0.04 {s*0.01} 0")}
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
-            {g("capsule", "collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055", mass="4.185")}
+            {g("capsule", "collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
             {drum(-s*0.0, s*0.05, 0.064, "shell")}
             {g("cylinder", material="frame", pos=f"0 {s*0.115} 0", euler="1.5708 0 0", size="0.035 0.003")}
             {shell("shin_paddle", -0.40, 0.065, (0.068, 0.028), (0.068, 0.028), 0.064, "frame", f"0.04 {-s*0.035} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
-              {g("capsule", "collision", fromto="0 0 0 0 0 -0.116", size="0.045", mass="0.3")}
-              {g("box", "collision", name=f"{side}_foot", pos="0.04 0 -0.156", size="0.16 0.06 0.04", mass="1.005")}
+              {g("capsule", "collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
+              {g("box", "collision", name=f"{side}_foot", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
               {drum(-s*0.0, s*0.045, 0.058, "shell")}
               {g("cylinder", material="frame", pos=f"0 {s*0.104} 0", euler="1.5708 0 0", size="0.032 0.003")}
               {shell("ankle_block", -0.15, -0.03, (0.04, 0.035), (0.055, 0.045), 0.02, "frame")}
@@ -97,13 +97,13 @@ def arm(s, side):
           <joint name="{side}_shoulder_pitch_joint" axis="0 1 0" range="-3.1 3.1"/>
           <joint name="{side}_shoulder_roll_joint" axis="1 0 0" range="{roll}"/>
           <joint name="{side}_shoulder_yaw_joint" axis="0 0 1" range="-2.6 2.6"/>
-          {g("capsule", "collision", fromto=f"0 {o} -0.05 0 {o} -{UPPER_ARM}", size="0.05", mass="2.52")}
+          {g("capsule", "collision", fromto=f"0 {o} -0.05 0 {o} -{UPPER_ARM}", size="0.05")}
           {g("capsule", material="frame", fromto="-0.05 0 0 0.05 0 0", size="0.082")}
           {shell("upper_arm_shell", -0.23, -0.06, (0.072, 0.066), (0.06, 0.058), 0.03, "shell", f"0 {o} 0")}
           {g("cylinder", material="rib", pos=f"0 {o} -0.25", size="0.05 0.04")}
           <body name="{side}_forearm" pos="0 {o} -{UPPER_ARM}">
             <joint name="{side}_elbow_joint" axis="0 1 0" range="-2.6 0"/>
-            {g("capsule", "collision", fromto=f"0 0 0 0 0 -{FOREARM}", size="0.04", mass="1.44")}
+            {g("capsule", "collision", fromto=f"0 0 0 0 0 -{FOREARM}", size="0.04")}
             {drum(-s*0.05, s*0.05, 0.07, "frame")}
             {g("capsule", material="frame", fromto="0 0 -0.04 0 0 -0.24", size="0.048")}
             {shell("forearm_shell", -0.215, -0.06, (0.054, 0.054), (0.042, 0.046), 0.025, "shell", "0.01 0 0")}
@@ -112,7 +112,7 @@ def arm(s, side):
               <joint name="{side}_wrist_yaw_joint" axis="0 0 1" range="-2.6 2.6"/>
               <joint name="{side}_wrist_pitch_joint" axis="0 1 0" range="-1.2 1.2"/>
               <joint name="{side}_wrist_roll_joint" axis="1 0 0" range="-1.2 1.2"/>
-              {g("box", "collision", pos="0 0 -0.08", size="0.04 0.025 0.08", mass="0.54")}
+              {g("box", "collision", pos="0 0 -0.08", size="0.04 0.025 0.08")}
               {shell("palm", -0.1, 0.0, (0.042, 0.024), (0.046, 0.022), 0.012, "frame")}
               {g("box", material="shell", pos=f"0 {s*0.026} -0.055", size="0.044 0.006 0.042")}
               {fingers.replace(f" {o} ", " 0 ").replace(f" {o + s*0.004} ", f" {s*0.004} ")}
@@ -131,7 +131,7 @@ XML = f"""<!--
   No actuators here: mjlab adds them from config.
 -->
 <mujoco model="atlas">
-  <compiler angle="radian" autolimits="true"/>
+  <compiler angle="radian" autolimits="true" inertiagrouprange="2 2"/>
 
   <asset>
     <material name="shell" rgba="0.45 0.56 0.82 1" specular="0.4" shininess="0.5"/>
@@ -150,14 +150,14 @@ XML = f"""<!--
       <geom group="3" rgba="0.8 0.2 0.2 0.5"/>
     </default>
     <default class="visual">
-      <geom group="2" contype="0" conaffinity="0" density="0"/>
+      <geom group="2" contype="0" conaffinity="0" density="@@RHO@@"/>
     </default>
   </default>
 
   <worldbody>
     <body name="pelvis" pos="0 0 {HIP_PITCH_Z}">
       <freejoint name="floating_base_joint"/>
-      {g("box", "collision", name="pelvis", pos="0 0 0.05", size="0.08 0.14 0.06", mass="11.58")}
+      {g("box", "collision", name="pelvis", pos="0 0 0.05", size="0.08 0.14 0.06")}
       {drum(-0.1, 0.1, 0.062, "frame")}
       {g("cylinder", material="rib", pos="0 0 0", euler="1.5708 0 0", size="0.064 0.05")}
       {drum(-0.1, 0.1, 0.062, "frame", z=0.12)}
@@ -168,14 +168,14 @@ XML = f"""<!--
 
       <body name="torso" pos="0 0 {WAIST_DZ}">
         <joint name="waist_yaw_joint" axis="0 0 1"/>
-        {g("box", "collision", name="torso", pos="0 0 0.33", size="0.13 0.17 0.27", mass="31.95")}
+        {g("box", "collision", name="torso", pos="0 0 0.33", size="0.13 0.17 0.27")}
         {shell("waist", 0.06, 0.19, (0.09, 0.125), (0.085, 0.115), 0.03, "frame")}
         {g("box", material="rib", pos="0.088 0 0.125", size="0.004 0.09 0.045")}
         {shell("belly", 0.18, 0.41, (0.14, 0.175), (0.13, 0.16), 0.04, "shell", "0.01 0 0")}
         {g("box", material="rib", pos="0.01 0 0.415", size="0.135 0.17 0.008")}
         {shell("yoke", 0.42, 0.6, (0.125, 0.165), (0.14, 0.18), 0.075, "frame", "0.005 0 0")}
-        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0")}
-        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0.14")}
+        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0", density="@@RHO_BATT@@")}
+        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0.14", density="@@RHO_BATT@@")}
         {g("capsule", material="frame", fromto="-0.03 0.12 0.57 -0.18 0.12 0.57", size="0.013")}
         {g("capsule", material="frame", fromto="-0.03 -0.12 0.57 -0.18 -0.12 0.57", size="0.013")}
         {g("capsule", material="frame", fromto="-0.18 0.12 0.57 -0.18 0.12 0.44", size="0.013")}
@@ -185,7 +185,7 @@ XML = f"""<!--
 
         <body name="head" pos="0 0 0.52">
           <joint name="neck_yaw_joint" axis="0 0 1"/>
-          {g("sphere", "collision", name="head", pos="0.03 0 0.221", size="0.1", mass="7.29")}
+          {g("sphere", "collision", name="head", pos="0.03 0 0.221", size="0.1")}
           {g("box", material="frame", pos="0 0 0.09", size="0.04 0.045 0.04")}
           {g("cylinder", material="shell", pos="0.01 0 0.221", euler="0 1.5708 0", size="0.1 0.12")}
           {g("cylinder", material="ring", pos="0.135 0 0.221", euler="0 1.5708 0", size="0.1 0.015")}
@@ -207,6 +207,27 @@ XML = f"""<!--
 """
 
 XML = XML.replace("@@MESHES@@", "\n".join(f'    <mesh name="{n}" vertex="{v}"/>' for n, v in MESHES.items()))
+# Mass model. Per-body masses are design estimates (docs/atlas-sources.md, "Mass"); inside each body the mass
+# is spread over its visual shells, so inertia and COM follow the real shapes. Battery packs are 2.5x denser
+# than the rest of the torso. Total = spec-sheet 90 kg.
+import mujoco  # noqa: E402
+
+BATT_FACTOR = 2.5
+BODY_KG = {"pelvis": 8.0, "torso": 36.0, "head": 4.0,
+           "thigh": 8.5, "shin": 4.0, "foot": 1.5,
+           "upper_arm": 3.2, "forearm": 2.0, "hand": 1.2}  # + 0.6 kg per hip body (fixed inertial)
+
+spec = mujoco.MjSpec.from_string(XML.replace("@@RHO_BATT@@", f"{1000 * BATT_FACTOR}").replace("@@RHO@@", "1000"))
+m = spec.compile()
+for b in spec.bodies:
+    key = b.name.removeprefix("left_").removeprefix("right_")
+    if key in BODY_KG:
+        k = BODY_KG[key] / m.body(b.name).mass[0]
+        for geom in b.geoms:
+            if geom.group == 2:
+                geom.density *= k
+m = spec.compile()
+XML = spec.to_xml()
 out = Path(__file__).parent / "atlas.xml"
 out.write_text(XML)
-print(f"wrote {out}")
+print(f"total {m.body_subtreemass[1]:.2f} kg")
