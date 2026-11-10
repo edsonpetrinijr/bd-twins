@@ -34,7 +34,7 @@ from mjlab.tasks.velocity.rl import VelocityOnPolicyRunner
 from atlas_mjlab import atlas_ppo_cfg, atlas_robot_cfg, atlas_velocity_env_cfg, get_spec
 
 LEGS = (".*_hip_.*_joint", ".*_knee_joint", ".*_ankle_.*_joint")
-BOX_POS = (0.42, 0.0, 0.0)          # in the torso frame: in front of the chest, where the fleet holds it
+BOX_POS = (0.28, 0.0, 0.33)         # torso frame (origin = waist joint): back face on the chest (x=0.13), centered on the carry-pose hands (x 0.42, z 0.33)
 BOX_SIZE = (0.15, 0.175, 0.125)     # half sizes, the fleet's 0.35 x 0.30 x 0.25 m case (x = depth)
 CARRY = {"shoulder_pitch": -0.55, "shoulder_roll": 0.05, "shoulder_yaw": -0.25, "elbow": -1.35}
 HANG = {"shoulder_pitch": 0.0, "shoulder_roll": 0.08, "shoulder_yaw": 0.0, "elbow": -0.35}
