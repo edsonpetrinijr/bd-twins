@@ -134,3 +134,10 @@ IoU 0.82 (legs 0.77, feet 0.75).
 
 ## v1.5 (09/nov): legs no longer stick out
 Edson: legs looked "pushed out". Two causes: knee/ankle drums sat 3–4 cm outboard of the thigh (side "ears" from the front), and the shin slab sat 6 cm ahead of the knee-ankle line (shin jutting forward from the side). Drums pulled inboard so their outer face is flush with the thigh; slab moved to 0.025 m ahead and slightly smaller. Legs IoU 0.77 → 0.82, total 0.82.
+
+## v1.6 (09/nov): joints sit on their actuators
+Edson: leg center not aligned, joints looked wrong. Internal check instead of photo matching:
+- `atlas/joints_check.py`: every joint with a visible actuator must lie on that drum's axis (axis found by PCA of the drum's vertices). Before: hip roll axis 70 mm from its drum, hip pitch 20 mm off the pelvis drum. After: all 12 visible joints 0 mm / 0 deg.
+- Hip pitch: the lower pelvis drum (axis y) now sits on the pitch axis and spans to the thighs, so each thigh hangs from its end.
+- Hip roll: the x-axis drum is centered on the roll axis (0.08 m above pitch), i.e. beside the upper pelvis.
+- Lower leg centered under the thigh: shin slab inboard, knee/ankle drums outboard, the pair centered on the leg line. Visual centers per segment (lateral): hip 0.120, thigh 0.120, shin 0.127, foot 0.120 m.

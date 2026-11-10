@@ -81,7 +81,7 @@ def leg(s, side):
         <joint name="{side}_hip_yaw_joint" axis="0 0 1"/>
         <joint name="{side}_hip_roll_joint" axis="1 0 0" range="-0.5 0.5"/>
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
-        {cad("hip_roll", 1, "rib", "0.0 0 -0.07")}
+        {cad("hip_roll", 1, "rib", "0 0 0")}
         <body name="{side}_thigh" pos="0 0 -{HIP_ROLL_DZ}">
           <joint name="{side}_hip_pitch_joint" axis="0 1 0" range="-2.2 0.6"/>
           {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.045")}
@@ -91,14 +91,14 @@ def leg(s, side):
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {cad("knee_drum", s, "shell", f"0 {s*0.018} 0")}
-            {cad("shin_paddle", 1, "frame", f"0.025 {-s*0.03} 0")}
+            {cad("knee_drum", s, "shell", f"0 {s*0.035} 0")}
+            {cad("shin_paddle", 1, "frame", f"0.025 {-s*0.028} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {cad("ankle_drum", s, "shell", f"0 {s*0.012} 0")}
+              {cad("ankle_drum", s, "shell", f"0 {s*0.03} 0")}
               {cad("foot", 1, "frame", "0 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
             </body>
@@ -176,7 +176,7 @@ XML = f"""<!--
     <body name="pelvis" pos="0 0 {HIP_PITCH_Z}">
       <freejoint name="floating_base_joint"/>
       {g("box", "collision", name="pelvis_collision", pos="0 0 0.05", size="0.08 0.14 0.06")}
-      {cad("pelvis_drum_low", 1, "frame", "0 0 0.02")}
+      {cad("pelvis_drum_low", 1, "frame", "0 0 0")}
       {cad("pelvis_drum_high", 1, "frame", "0 0 0.13")}
       <site name="imu_in_pelvis" pos="0 0 0.05"/>
 {leg(1, "left")}
