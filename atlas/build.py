@@ -64,6 +64,15 @@ def paddle(s, length, half_w, half_t, x, y, material="frame"):
     ])
 
 
+CAD_PARTS = set()
+
+
+def cad(name, s, material, pos):
+    """CAD mesh from atlas/meshes (atlas/cad.py). Parts are modeled for the left side; s=-1 turns them 180 deg."""
+    CAD_PARTS.add(name)
+    return g("mesh", mesh=name, material=material, pos=pos, euler="0 0 3.14159265" if s < 0 else "0 0 0")
+
+
 def leg(s, side):
     # From the product renders: thigh = slim blue link; knee and ankle = blue drums (axis y) on the outside;
     # shin = dark rounded paddle on the inside, in front of the knee-ankle line; short dark foot.
@@ -81,14 +90,14 @@ def leg(s, side):
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {joint(s, s*0.035, 0.035, 0.062, "shell")}
-            {paddle(s, SHIN, 0.065, 0.025, 0.035, -s*0.025)}
+            {cad("knee_drum", s, "shell", f"0 {s*0.035} 0")}
+            {cad("shin_paddle", 1, "frame", f"0.035 {-s*0.025} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {joint(s, s*0.03, 0.03, 0.056, "shell")}
+              {cad("ankle_drum", s, "shell", f"0 {s*0.03} 0")}
               {shell("ankle_block", -0.15, -0.03, (0.04, 0.035), (0.055, 0.045), 0.02, "frame")}
               {shell("sole", -0.196, -0.145, (0.15, 0.058), (0.165, 0.062), 0.02, "frame", "0.035 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
@@ -154,6 +163,7 @@ XML = f"""<!--
     <material name="face" rgba="0.03 0.03 0.04 1" specular="0.9" shininess="0.9"/>
     <material name="ring" rgba="1 0.92 0.72 1" emission="1"/>
 @@MESHES@@
+@@CAD@@
   </asset>
 
   <default>
@@ -227,6 +237,7 @@ XML = f"""<!--
 </mujoco>
 """
 
+XML = XML.replace("@@CAD@@", "\n".join(f'    <mesh name="{n}" file="meshes/{n}.stl"/>' for n in sorted(CAD_PARTS)))
 XML = XML.replace("@@MESHES@@", "\n".join(f'    <mesh name="{n}" vertex="{v}"/>' for n, v in MESHES.items()))
 # Mass model. Per-body masses are design estimates (docs/atlas-sources.md, "Mass"); inside each body the mass
 # is spread over its visual shells, so inertia and COM follow the real shapes. Battery packs are 2.5x denser
@@ -239,6 +250,7 @@ BODY_KG = {"pelvis": 8.0, "torso": 36.0, "head": 4.0,
            "upper_arm": 3.2, "forearm": 2.0, "hand": 1.2}  # + 0.6 kg per hip body (fixed inertial)
 
 spec = mujoco.MjSpec.from_string(XML.replace("@@RHO_BATT@@", f"{1000 * BATT_FACTOR}").replace("@@RHO@@", "1000"))
+spec.meshdir = str(Path(__file__).parent)  # CAD meshes are referenced relative to atlas/
 m = spec.compile()
 for b in spec.bodies:
     key = b.name.removeprefix("left_").removeprefix("right_")
@@ -254,6 +266,8 @@ for b in spec.bodies[1:]:
     b.explicitinertial = True
     b.mass, b.ipos, b.iquat, b.inertia = bm.mass[0], bm.ipos, bm.iquat, bm.inertia
 XML = spec.to_xml()
+import re  # noqa: E402
+XML = re.sub(r' meshdir="[^"]*"', "", XML)  # keep mesh paths relative to atlas.xml
 out = Path(__file__).parent / "atlas.xml"
 out.write_text(XML)
 print(f"total {m.body_subtreemass[1]:.2f} kg")

@@ -118,3 +118,6 @@ First try (uniform density over the shells) gave a 7 kg shin and a 4 kg forearm 
 
 ## v0.8 (09/nov): narrower shoulders
 Edson: shoulders looked too wide. The front close-up widths (shoulder 0.25, torso ±0.175) were all measured in head-ring units with ring Ø = 0.20 m assumed; scaled torso widths by ~0.85 instead: shoulder 0.205 m, belly ±0.148, yoke ±0.152, hips 0.11 m. Collision radii trimmed so the hanging forearm still clears the thigh and the upper arm clears the torso.
+
+## CAD parts (v0.9, 09/nov)
+`atlas/cad.py` (build123d) makes real solids for the visual shell and writes `atlas/meshes/*.stl`; `build.py` references them. First parts: shin slab (stadium profile, filleted edges) and knee/ankle drums (filleted, recessed hub). Same shapes and sizes as before, now with soft edges and real holes. Geometry is ours, drawn from the BD photos; the Sketchfab model is only looked at like another photo, never traced or measured into a part.
