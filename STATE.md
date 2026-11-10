@@ -2,7 +2,7 @@
 id: bd-twins
 status: active
 updated: 2026-11-09
-stopped_at: v1.2, corpo todo em CAD
+stopped_at: v1.3, perna revisada
 next: Treinar Flat-BD-Atlas na GPU
 tasks:
   - Casca visual mais fiel (mesh)
@@ -31,3 +31,4 @@ Atlas v0.1 do zero: 28 DoF de corpo. Pernas e braços medidos nas fotos do spec 
 - 2026-11-09 · v0.10/v1.0: coxa, braço, antebraço, cotovelo, tronco (barriga, domo, cintura), tambores frisados da pelve e cabeça (casca, anel, face rebaixada) viraram CAD.
 - 2026-11-09 · v1.1: ombro (tambor com cubo), mão de 3 dedos + polegar (esquerda/direita), pé com calcanhar e ponta em CAD; face escura fosca.
 - 2026-11-09 · v1.2: perna mais grossa, domo do tronco, baterias e alça em CAD, cores e luz de estúdio.
+- 2026-11-09 · v1.3: perna refeita pela vista lateral real (atuador de quadril frisado, coxa azul + aletas atrás, canela à frente).

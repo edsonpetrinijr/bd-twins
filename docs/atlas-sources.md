@@ -124,3 +124,10 @@ Edson: shoulders looked too wide. The front close-up widths (shoulder 0.25, tors
 
 ## v1.2 (09/nov)
 Thicker legs (thigh 0.15 x 0.13 m, shin slab 0.066 m thick, bigger knee/ankle/hip drums; hips 0.12 m apart), domed yoke (3-section loft), swappable battery modules and a swept carry handle in CAD, wider neck, upper-arm shell starts below the shoulder drum, muted colors closer to the product renders, studio lights in `atlas/stage.py`. IoU 0.82 (head 0.87).
+
+## v1.3 (09/nov): leg fidelity pass
+From the leg close-ups (webinar 3/4 render + spec-sheet side render):
+- Hip roll actuator is a ribbed drum along x at the top of the thigh (round end seen from the front, ribs from the side). The old y-axis hip drum was removed.
+- Thigh: blue full-depth shell on the upper ~60%; lower part = blue strip in front + dark finned motor block behind (vertical fins seen from the side). Narrower laterally (0.10 m), deep front-back (0.14 m).
+- Shin slab bigger front-back (r 0.088/0.074 m) and further forward (0.06 m ahead of the knee-ankle line), thinner laterally (0.054 m).
+IoU 0.82 (legs 0.77, feet 0.75).

@@ -195,14 +195,33 @@ def handle():
     return p.part
 
 
+def finned(dx, dy, dz, fins):
+    """Heat-sink block: plates in the y-z plane spaced along x (vertical stripes seen from the side)."""
+    with BuildPart() as p:
+        Box(dx, dy, dz)
+        fillet(p.edges().filter_by(Axis.Z), 0.006)
+        pitch = dx / (fins * 2 + 1)
+        for i in range(fins):
+            x = -dx / 2 + pitch * (2 * i + 1.5)
+            with Locations((x, 0, 0)):
+                Box(pitch, dy + 0.01, dz * 0.86, mode=Mode.SUBTRACT)
+    return p.part
+
+
+def hip_roll():
+    """Hip roll actuator: ribbed drum along x (seen as a round end from the front, ribs from the side)."""
+    return ribbed(0.062, 0.15, 7, 0.006).rotate(Axis.Y, 90)
+
+
 if __name__ == "__main__":
-    save(paddle(length=0.336, r_top=0.074, r_bot=0.064, thick=0.066, edge=0.018), "shin_paddle")
-    save(drum(r=0.07, width=0.08, hub_r=0.034, hub_depth=0.013, edge=0.009), "knee_drum")
-    save(drum(r=0.062, width=0.066, hub_r=0.03, hub_depth=0.012, edge=0.008), "ankle_drum")
+    save(paddle(length=0.336, r_top=0.088, r_bot=0.074, thick=0.054, edge=0.016), "shin_paddle")
+    save(drum(r=0.066, width=0.07, hub_r=0.032, hub_depth=0.013, edge=0.009), "knee_drum")
+    save(drum(r=0.056, width=0.06, hub_r=0.028, hub_depth=0.012, edge=0.008), "ankle_drum")
     save(drum(r=0.074, width=0.1, hub_r=0.034, hub_depth=0.013, edge=0.01), "hip_drum")
     save(drum(r=0.062, width=0.11, hub_r=0.03, hub_depth=0.012, edge=0.009), "elbow_drum")
-    save(tube(0.0, -0.42, (0.15, 0.13), (0.13, 0.112), 0.04, 0.018), "thigh_shell")
-    save(ribbed(0.045, 0.19, 9, 0.007), "thigh_motor")
+    save(tube(-0.05, -0.29, (0.14, 0.1), (0.13, 0.094), 0.035, 0.016), "thigh_shell")
+    save(tube(-0.27, -0.43, (0.07, 0.092), (0.064, 0.086), 0.025, 0.01), "thigh_front")
+    save(finned(0.07, 0.084, 0.16, 6), "thigh_motor")
     save(tube(-0.085, -0.235, (0.144, 0.132), (0.12, 0.116), 0.035, 0.02), "upper_arm_shell")
     save(ribbed(0.05, 0.08, 4, 0.006), "elbow_ribs")
     save(tube(-0.04, -0.245, (0.1, 0.094), (0.086, 0.082), 0.038, 0.012), "forearm_core")
@@ -224,3 +243,4 @@ if __name__ == "__main__":
     save(foot(), "foot")
     save(battery(), "battery")
     save(handle(), "handle")
+    save(hip_roll(), "hip_roll")
