@@ -48,6 +48,22 @@ def drum(y0, y1, r, material="frame", x=0.0, z=0.0):
     return g("capsule", material=material, fromto=f"{x} {y0} {z} {x} {y1} {z}", size=r)
 
 
+def joint(s, yc, half, r, material="shell", z=0.0, x=0.0):
+    """Actuator drum (flat cylinder, axis y) centered at lateral yc, with a dark hub on its outer face."""
+    face = yc + s * (half + 0.002)
+    return (g("cylinder", material=material, pos=f"{x} {yc} {z}", euler="1.5708 0 0", size=f"{r} {half}") + "\n" +
+            g("cylinder", material="rib", pos=f"{x} {face} {z}", euler="1.5708 0 0", size=f"{r * 0.5} 0.003"))
+
+
+def paddle(s, length, half_w, half_t, x, y, material="frame"):
+    """Flat slab with round ends (stadium seen from the side) from z=0 down to z=-length."""
+    return "\n".join([
+        g("box", material=material, pos=f"{x} {y} {-length / 2}", size=f"{half_w} {half_t} {length / 2}"),
+        g("cylinder", material=material, pos=f"{x} {y} 0", euler="1.5708 0 0", size=f"{half_w} {half_t}"),
+        g("cylinder", material=material, pos=f"{x} {y} {-length}", euler="1.5708 0 0", size=f"{half_w} {half_t}"),
+    ])
+
+
 def leg(s, side):
     # From the product renders: thigh = slim blue link; knee and ankle = blue drums (axis y) on the outside;
     # shin = dark rounded paddle on the inside, in front of the knee-ankle line; short dark foot.
@@ -59,23 +75,20 @@ def leg(s, side):
         <body name="{side}_thigh" pos="0 0 -{HIP_ROLL_DZ}">
           <joint name="{side}_hip_pitch_joint" axis="0 1 0" range="-2.2 0.6"/>
           {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.055")}
-          {drum(-s*0.02, s*0.06, 0.07, "frame")}
-          {g("cylinder", material="rib", pos=f"0 {s*0.131} 0", euler="1.5708 0 0", size="0.04 0.004")}
-          {shell("thigh_shell", -0.40, -0.06, (0.062, 0.052), (0.055, 0.048), 0.03, "shell", f"0.005 {s*0.01} 0")}
-          {shell("thigh_motor", -0.40, -0.24, (0.035, 0.042), (0.035, 0.042), 0.015, "rib", f"-0.04 {s*0.01} 0")}
+          {joint(s, s*0.03, 0.045, 0.068, "frame")}
+          {shell("thigh_shell", -0.42, 0.0, (0.06, 0.048), (0.052, 0.044), 0.03, "shell", "0.005 0 0")}
+          {shell("thigh_motor", -0.43, -0.25, (0.035, 0.04), (0.035, 0.04), 0.015, "rib", "-0.035 0 0")}
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {drum(-s*0.0, s*0.05, 0.064, "shell")}
-            {g("cylinder", material="frame", pos=f"0 {s*0.115} 0", euler="1.5708 0 0", size="0.035 0.003")}
-            {shell("shin_paddle", -0.40, 0.065, (0.068, 0.028), (0.068, 0.028), 0.064, "frame", f"0.04 {-s*0.035} 0")}
+            {joint(s, s*0.035, 0.035, 0.062, "shell")}
+            {paddle(s, SHIN, 0.065, 0.025, 0.035, -s*0.025)}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {drum(-s*0.0, s*0.045, 0.058, "shell")}
-              {g("cylinder", material="frame", pos=f"0 {s*0.104} 0", euler="1.5708 0 0", size="0.032 0.003")}
+              {joint(s, s*0.03, 0.03, 0.056, "shell")}
               {shell("ankle_block", -0.15, -0.03, (0.04, 0.035), (0.055, 0.045), 0.02, "frame")}
               {shell("sole", -0.196, -0.145, (0.15, 0.058), (0.165, 0.062), 0.02, "frame", "0.035 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
@@ -104,7 +117,7 @@ def arm(s, side):
           <body name="{side}_forearm" pos="0 {o} -{UPPER_ARM}">
             <joint name="{side}_elbow_joint" axis="0 1 0" range="-2.6 0"/>
             {g("capsule", "collision", name=f"{side}_forearm_collision", fromto=f"0 0 0 0 0 -{FOREARM}", size="0.04")}
-            {drum(-s*0.05, s*0.05, 0.07, "frame")}
+            {joint(s, 0.0, 0.055, 0.062, "frame")}
             {g("capsule", material="frame", fromto="0 0 -0.04 0 0 -0.24", size="0.048")}
             {shell("forearm_shell", -0.215, -0.06, (0.054, 0.054), (0.042, 0.046), 0.025, "shell", "0.01 0 0")}
             {g("cylinder", material="shell", pos="0 0 -0.262", size="0.046 0.018")}
@@ -158,10 +171,10 @@ XML = f"""<!--
     <body name="pelvis" pos="0 0 {HIP_PITCH_Z}">
       <freejoint name="floating_base_joint"/>
       {g("box", "collision", name="pelvis_collision", pos="0 0 0.05", size="0.08 0.14 0.06")}
-      {drum(-0.1, 0.1, 0.062, "frame")}
-      {g("cylinder", material="rib", pos="0 0 0", euler="1.5708 0 0", size="0.064 0.05")}
-      {drum(-0.1, 0.1, 0.062, "frame", z=0.12)}
-      {g("cylinder", material="rib", pos="0 0 0.12", euler="1.5708 0 0", size="0.064 0.05")}
+      {g("cylinder", material="frame", pos="0 0 0.02", euler="1.5708 0 0", size="0.06 0.085")}
+      {g("cylinder", material="rib", pos="0 0 0.02", euler="1.5708 0 0", size="0.062 0.045")}
+      {g("cylinder", material="frame", pos="0 0 0.13", euler="1.5708 0 0", size="0.055 0.1")}
+      {g("cylinder", material="rib", pos="0 0 0.13", euler="1.5708 0 0", size="0.057 0.05")}
       <site name="imu_in_pelvis" pos="0 0 0.05"/>
 {leg(1, "left")}
 {leg(-1, "right")}
