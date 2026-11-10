@@ -9,6 +9,7 @@ Needs MuJoCo >= 4 (separate env from mjlab training):
   uv venv .venv-fleet --python 3.12 && uv pip install --python .venv-fleet "mujoco>=4" pillow numpy
   .venv-fleet/bin/python fleet/run.py                  # headless: event log + checks
   .venv-fleet/bin/python fleet/run.py --video out.mp4  # plus video with the fleet panel
+  .venv-fleet/bin/python fleet/run.py --video out.mp4 --filament  # same, MuJoCo 4 Filament renderer (PBR)
 """
 
 import argparse
@@ -43,6 +44,41 @@ CARD = [0.72, 0.55, 0.36, 1]
 
 def quat_yaw(yaw):
     return [math.cos(yaw / 2), 0, 0, math.sin(yaw / 2)]
+
+
+class FilamentView:
+    """MuJoCo 4 Filament renderer with the same update_scene/render calls as mujoco.Renderer."""
+
+    ctx = None
+
+    def __init__(self, m, h, w):
+        from mujoco import mjrf
+        import mujoco.studio.window  # noqa: F401  registers the resource providers Filament needs
+        from mujoco.rendering.filament.model_scene import ModelScene
+        from mujoco.rendering.filament.renderer import Renderer, View
+        if FilamentView.ctx is None:  # one GL context per process
+            FilamentView.ctx = mjrf.Context(mjrf.ContextConfig())
+        self.m, self.View = m, View
+        # Filament uses physical units (lux) and ignores MJCF diffuse levels: key light 1e5, fills 3e4
+        m.light_intensity[:] = 3e4
+        m.light_intensity[-1] = 1e5
+        self.r = Renderer(FilamentView.ctx)
+        self.ms = ModelScene(FilamentView.ctx, m, self.r.scene("main"))
+        for g in range(m.ngeom):  # only visual groups 0 and 2, like the GL view
+            if m.geom_group[g] not in (0, 2):
+                self.r.scene("main").remove_renderable(self.ms.get_renderable(mujoco.mjtObj.mjOBJ_GEOM, g))
+        self.buf = np.zeros((h, w, 3), np.uint8)
+        self.r.target("img", self.buf)
+        self.scn = mujoco.MjvScene(m, 20000)
+
+    def update_scene(self, d, cam, opt):
+        self.ms.update(d)
+        mujoco.mjv_updateScene(self.m, d, opt, None, cam, mujoco.mjtCatBit.mjCAT_ALL, self.scn)
+
+    def render(self):
+        self.r.render([self.View(scene="main", target="img", camera=self.scn.camera[0],
+                                 headlight=True, headlight_intensity=0.3)])
+        return self.buf.copy()
 
 
 def build_scene(n_boxes):
@@ -180,6 +216,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video")
     ap.add_argument("--seconds", type=float, default=150)
+    ap.add_argument("--start", type=float, default=0.0, help="video starts here; the sim before it runs unrendered")
+    ap.add_argument("--filament", action="store_true", help="render with the MuJoCo 4 Filament renderer")
+    ap.add_argument("--frame", type=float, help="save one still at this time (needs --video for the path)")
     args = ap.parse_args()
 
     n_boxes = BOXES_PER_TRUCK * len(DOCKS)
@@ -242,7 +281,8 @@ def main():
 
     fps, W, H, PANEL = 20, 1280, 720, 340
     if args.video:
-        r = mujoco.Renderer(m, H, W - PANEL)
+        View = FilamentView if args.filament else mujoco.Renderer
+        r = View(m, H, W - PANEL)
         opt = mujoco.MjvOption()
         opt.geomgroup[:] = 0
         opt.geomgroup[0] = opt.geomgroup[2] = 1
@@ -250,10 +290,10 @@ def main():
         cam.lookat[:] = [-0.6, 0.0, 0.3]
         cam.distance, cam.azimuth, cam.elevation = 17.5, 100, -46
         IW, IH = 400, 225
-        inset_r = mujoco.Renderer(m, IH, IW)
+        inset_r = View(m, IH, IW)
         follow = mujoco.MjvCamera()
         follow.distance, follow.elevation = 3.4, -14
-        ff = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
+        ff = None if args.frame else subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
                                "-s", f"{W}x{H}", "-r", str(fps), "-i", "-", "-pix_fmt", "yuv420p", args.video],
                               stdin=subprocess.PIPE)
         try:
@@ -368,7 +408,7 @@ def main():
                 shipped.append(i + 1)
                 fm.say(t, f"box {i + 1} shipped by the conveyor")
 
-        if args.video:
+        if args.video and t >= (args.start if args.frame is None else args.frame):
             r.update_scene(d, cam, opt)
             frame = Image.new("RGB", (W, H), (16, 17, 20))
             frame.paste(Image.fromarray(r.render()), (0, 0))
@@ -397,6 +437,9 @@ def main():
             for when, msg in fm.log[-((H - y - 10) // 18):]:
                 dr.text((x0, y), f"{when:5.1f}  {msg}"[:46], font=small, fill=(195, 195, 200))
                 y += 18
+            if args.frame is not None:
+                frame.save(args.video)
+                return
             ff.stdin.write(frame.tobytes())
         t = round(t + frame_dt, 4)
         if len(shipped) == n_boxes:
@@ -408,7 +451,8 @@ def main():
     for when, msg in fm.log:
         print(f"{when:6.1f}s  {msg}")
     print(f"delivered {len(fm.delivered)}/{n_boxes}, shipped {len(shipped)}/{n_boxes} in {t:.0f} s")
-    assert len(shipped) == n_boxes, "not every box left on the conveyor"
+    if args.seconds >= 150:  # a clipped run (--seconds) stops before every box is out
+        assert len(shipped) == n_boxes, "not every box left on the conveyor"
 
 
 if __name__ == "__main__":

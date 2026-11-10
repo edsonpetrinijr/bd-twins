@@ -28,7 +28,8 @@ python atlas/train.py play  Mjlab-Velocity-Flat-BD-Atlas
 Fleet demo (kinematic robots, real box physics, MuJoCo 4): 2 Stretch unload two trailers, 2 Atlas carry boxes to a conveyor (MuJoCo 4 `surfacevel` belt), 2 Spot patrol. The fleet manager (`fleet/manager.py`: shared grid map, A*, task queue, traffic priority with detours, replanning on a blocked aisle or a dropped box) runs the mission; Atlas turns its torso (continuous waist) to face the pallet and the belt while its legs keep the path heading.
 ```
 uv venv .venv-fleet --python 3.12 && uv pip install --python .venv-fleet -r requirements-fleet.txt
-.venv-fleet/bin/python fleet/run.py --video fleet.mp4
+.venv-fleet/bin/python fleet/run.py --video fleet.mp4              # classic OpenGL renderer
+.venv-fleet/bin/python fleet/run.py --video fleet.mp4 --filament   # MuJoCo 4 Filament renderer (PBR, soft shadows)
 python fleet/manager.py   # manager self-check
 ```
 mjlab training stays on MuJoCo 3.11 (`requirements.txt`); the fleet demo uses MuJoCo 4 (`requirements-fleet.txt`).
