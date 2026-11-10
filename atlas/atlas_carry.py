@@ -50,11 +50,17 @@ def carry_spec() -> mujoco.MjSpec:
     return spec
 
 
+def wrap(a):
+    return torch.remainder(a + math.pi, 2 * math.pi) - math.pi
+
+
 @dataclass(kw_only=True)
 class UpperBodyCommandCfg(CommandTermCfg):
     entity_name: str = "robot"
     zero_waist_prob: float = 0.3   # many picks happen straight ahead
     carry_prob: float = 0.7
+    native: bool = False           # v2: torso heading in the world frame, full turn, rate slows with load
+    slow_rate: float = 1.2         # v2: waist rate (rad/s) with the heaviest box
 
     def build(self, env):
         return UpperBodyCommand(self, env)
@@ -86,27 +92,43 @@ class UpperBodyCommand(CommandTerm):
         self.carry_pose = torch.tensor(carry, device=dev)
         self.hang_pose = torch.tensor(hang, device=dev)
         self.metrics["error_waist"] = torch.zeros(n, device=dev)
+        self.box_id = self.robot.indexing.body_ids[self.robot.body_names.index("carry_box")]
+        self.goal_w = torch.zeros(n, device=dev)  # v2: torso heading goal in the world
 
     @property
     def command(self) -> torch.Tensor:
-        return torch.stack([self.waist, self.goal, self.carry], dim=-1)
+        waist = wrap(self.waist) if self.cfg.native else self.waist
+        return torch.stack([waist, self.goal, self.carry], dim=-1)
 
     def _update_metrics(self):
         q = self.robot.data.joint_pos[:, self.waist_id]
-        self.metrics["error_waist"] += torch.abs(q - self.waist) * self.dt / self._env.max_episode_length_s
+        self.metrics["error_waist"] += torch.abs(wrap(q - self.waist)) * self.dt / self._env.max_episode_length_s
 
     def _resample_command(self, env_ids):
         k = len(env_ids)
-        goal = torch.empty(k, device=self.device).uniform_(-WAIST_MAX, WAIST_MAX)
+        lim = math.pi if self.cfg.native else WAIST_MAX
+        goal = torch.empty(k, device=self.device).uniform_(-lim, lim)
         goal[torch.rand(k, device=self.device) < self.cfg.zero_waist_prob] = 0.0
         self.goal[env_ids] = goal
+        # v2: the goal is a torso heading in the world (face the pallet / belt while the legs go elsewhere)
+        self.goal_w[env_ids] = self.robot.data.heading_w[env_ids] + goal
         self.carry[env_ids] = (torch.rand(k, device=self.device) < self.cfg.carry_prob).float()
 
     def _update_command(self, env_ids):
         if env_ids is not None:  # reset: start from the upright default
             self.waist[env_ids] = 0.0
-        step = WAIST_RATE * self.dt
-        self.waist += torch.clamp(self.goal - self.waist, -step, step)
+        if self.cfg.native:
+            heading = self.robot.data.heading_w
+            if env_ids is not None:
+                self.goal_w[env_ids] = heading[env_ids] + self.goal[env_ids]
+            self.goal = wrap(self.goal_w - heading)  # waist angle that makes the torso face goal_w
+            mass = self._env.sim.model.body_mass[:, self.box_id]
+            rate = WAIST_RATE - (WAIST_RATE - self.cfg.slow_rate) * torch.clamp(mass / 20.0, 0.0, 1.0)
+            # shortest way round; the waist is continuous, so the joint target may leave [-pi, pi]
+            self.waist += torch.clamp(wrap(self.goal - self.waist), -rate * self.dt, rate * self.dt)
+        else:
+            step = WAIST_RATE * self.dt
+            self.waist += torch.clamp(self.goal - self.waist, -step, step)
         c = self.carry.unsqueeze(-1)
         arms = c * self.carry_pose + (1 - c) * self.hang_pose
         self.robot.set_joint_position_target(self.waist.unsqueeze(-1), joint_ids=[self.waist_id])
@@ -114,7 +136,7 @@ class UpperBodyCommand(CommandTerm):
         self.robot.set_joint_position_target(arms, joint_ids=self.arm_ids)
 
 
-def atlas_carry_env_cfg(play: bool = False):
+def atlas_carry_env_cfg(play: bool = False, native: bool = False):
     cfg = atlas_velocity_env_cfg(play=play, flat=True)
     robot = atlas_robot_cfg()
     robot.spec_fn = carry_spec
@@ -123,7 +145,7 @@ def atlas_carry_env_cfg(play: bool = False):
     action = cfg.actions["joint_pos"]
     action.actuator_names = LEGS
     action.scale = {k: v for k, v in action.scale.items() if any(s in k for s in ("hip", "knee", "ankle"))}
-    cfg.commands["upper"] = UpperBodyCommandCfg(resampling_time_range=(1.5, 4.0))
+    cfg.commands["upper"] = UpperBodyCommandCfg(resampling_time_range=(1.5, 4.0), native=native)
     upper_obs = ObservationTermCfg(func=mdp.generated_commands, params={"command_name": "upper"})
     cfg.observations["actor"].terms["upper_command"] = upper_obs
     cfg.observations["critic"].terms["upper_command"] = upper_obs
@@ -139,6 +161,19 @@ def atlas_carry_env_cfg(play: bool = False):
         mode="reset", func=dr.body_mass,
         params={"asset_cfg": SceneEntityCfg("robot", body_names=("carry_box",)), "operation": "abs",
                 "ranges": (0.1, 20.0)})
+
+    if native:
+        # Gait: v1 shuffled (feet ~4 cm up, air_time weight 0). Reward real swing phases, and keep the
+        # pelvis (not the torso, which turns on purpose) from wobbling.
+        air = cfg.rewards["air_time"]
+        air.weight = 0.5
+        air.params.update(threshold_min=0.2, threshold_max=0.6, command_threshold=0.1)
+        cfg.rewards["body_ang_vel"].weight = -0.05
+        cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("pelvis",)
+        # Atlas-only skill: carry "backwards" (legs walk one way, torso faces the other), so ask for more
+        # backward and sideways walking than the default.
+        r = cfg.commands["twist"].ranges
+        r.lin_vel_x, r.lin_vel_y = (-1.0, 1.0), (-0.6, 0.6)
     return cfg
 
 
@@ -156,10 +191,28 @@ register_mjlab_task(
     runner_cls=VelocityOnPolicyRunner,
 )
 
+
+def atlas_native_ppo_cfg():
+    cfg = atlas_carry_ppo_cfg()  # same experiment folder, so it can resume from the v1 carry run
+    cfg.max_iterations = 1_500
+    return cfg
+
+
+# v2 ("native"): same observation/action sizes as v1, so it fine-tunes from the v1 checkpoint:
+#   python atlas/train.py Mjlab-Velocity-Native-BD-Atlas --env.scene.num-envs 4096 \
+#     --agent.resume True --agent.load-run <v1 run folder> --agent.load-checkpoint model_2999.pt
+register_mjlab_task(
+    task_id="Mjlab-Velocity-Native-BD-Atlas",
+    env_cfg=atlas_carry_env_cfg(native=True),
+    play_env_cfg=atlas_carry_env_cfg(play=True, native=True),
+    rl_cfg=atlas_native_ppo_cfg(),
+    runner_cls=VelocityOnPolicyRunner,
+)
+
 if __name__ == "__main__":  # self-check: build the env on CPU, step it with zero actions, print shapes
     from mjlab.envs import ManagerBasedRlEnv
 
-    env_cfg = atlas_carry_env_cfg()
+    env_cfg = atlas_carry_env_cfg(native=True)
     env_cfg.scene.num_envs = 4
     env = ManagerBasedRlEnv(env_cfg, device="cpu")
     obs, _ = env.reset()
