@@ -151,3 +151,7 @@ Edson: v1.6 hip looked worse, neck too wide, legs still a bit out, black shin sl
 
 ## v1.8 (09/nov): concentric knee/ankle
 Edson's close-up: the round ends of the shin slab were not concentric with the knee and ankle drums (slab sat 25 mm forward). Slab now centered on both axes; shin collision capsule moved with it. `joints_check.py` also checks the slab ends (0 mm).
+
+## Demo without a policy (09/nov)
+`atlas/demo.py`: 12 s scripted routine (stand, squat, wave, turn waist/head). Joint PD (stiffer than the RL gains) + one balance term: ankles lean the body so the COM stays over the feet. Stays up: max torso tilt 13 deg, pelvis never below 0.82 m.
+What it showed: pure PD fell backward in ~1.5 s (COM 4–7 cm behind the foot center, ankle stiffness below m·g·h); a deep squat (knee 1.2 rad, torso upright) also fell back. Fixed with the ankle balance term, a shallower squat and a forward torso lean. Physics sanity: masses and contacts behave; the policy will need to handle the COM sitting behind the ankle (battery on the back).
