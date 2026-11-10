@@ -121,3 +121,6 @@ Edson: shoulders looked too wide. The front close-up widths (shoulder 0.25, tors
 
 ## CAD parts (v0.9, 09/nov)
 `atlas/cad.py` (build123d) makes real solids for the visual shell and writes `atlas/meshes/*.stl`; `build.py` references them. First parts: shin slab (stadium profile, filleted edges) and knee/ankle drums (filleted, recessed hub). Same shapes and sizes as before, now with soft edges and real holes. Geometry is ours, drawn from the BD photos; the Sketchfab model is only looked at like another photo, never traced or measured into a part.
+
+## v1.2 (09/nov)
+Thicker legs (thigh 0.15 x 0.13 m, shin slab 0.066 m thick, bigger knee/ankle/hip drums; hips 0.12 m apart), domed yoke (3-section loft), swappable battery modules and a swept carry handle in CAD, wider neck, upper-arm shell starts below the shoulder drum, muted colors closer to the product renders, studio lights in `atlas/stage.py`. IoU 0.82 (head 0.87).

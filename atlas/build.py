@@ -15,7 +15,7 @@ WAIST_DZ = 0.06            # waist yaw above pelvis origin
 SHOULDER_DZ = 0.514        # shoulder axis above waist -> 1.573 m (front close-up, product video)
 SHOULDER_Y = 0.205         # shoulder actuator center, lateral (v0.8: 0.23 looked too wide; all torso widths scaled ~0.85)
 ARM_OUT = 0.0              # arm hangs straight below the shoulder actuator
-HIP_Y = 0.11               # hip spacing (keeps the hanging forearm clear of the thigh)
+HIP_Y = 0.12               # hip spacing (keeps the hanging forearm clear of the thigh)
 UPPER_ARM, FOREARM = 0.31, 0.28
 
 MESHES = {}
@@ -64,7 +64,7 @@ def paddle(s, length, half_w, half_t, x, y, material="frame"):
     ])
 
 
-CAD_PARTS = set()
+CAD_PARTS = {"battery"}
 
 
 def cad(name, s, material, pos):
@@ -83,21 +83,21 @@ def leg(s, side):
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <body name="{side}_thigh" pos="0 0 -{HIP_ROLL_DZ}">
           <joint name="{side}_hip_pitch_joint" axis="0 1 0" range="-2.2 0.6"/>
-          {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.05")}
-          {cad("hip_drum", s, "frame", f"0 {s*0.03} 0")}
+          {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.045")}
+          {cad("hip_drum", s, "frame", f"0 {s*0.035} 0")}
           {cad("thigh_shell", 1, "shell", "0.005 0 0")}
-          {cad("thigh_motor", 1, "rib", "-0.04 0 -0.34")}
+          {cad("thigh_motor", 1, "rib", "-0.05 0 -0.33")}
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {cad("knee_drum", s, "shell", f"0 {s*0.035} 0")}
-            {cad("shin_paddle", 1, "frame", f"0.035 {-s*0.025} 0")}
+            {cad("knee_drum", s, "shell", f"0 {s*0.045} 0")}
+            {cad("shin_paddle", 1, "frame", f"0.035 {-s*0.03} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {cad("ankle_drum", s, "shell", f"0 {s*0.03} 0")}
+              {cad("ankle_drum", s, "shell", f"0 {s*0.038} 0")}
               {cad("foot", 1, "frame", "0 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
             </body>
@@ -149,12 +149,12 @@ XML = f"""<!--
   <compiler angle="radian" autolimits="true" inertiagrouprange="2 2"/>
 
   <asset>
-    <material name="shell" rgba="0.45 0.56 0.82 1" specular="0.4" shininess="0.5"/>
-    <material name="frame" rgba="0.16 0.16 0.18 1" specular="0.3" shininess="0.4"/>
+    <material name="shell" rgba="0.40 0.50 0.70 1" specular="0.3" shininess="0.45"/>
+    <material name="frame" rgba="0.13 0.13 0.15 1" specular="0.25" shininess="0.35"/>
     <material name="rib" rgba="0.1 0.1 0.11 1" specular="0.1"/>
     <material name="sole" rgba="0.08 0.08 0.08 1"/>
     <material name="face" rgba="0.02 0.02 0.025 1" specular="0.15" shininess="0.3"/>
-    <material name="ring" rgba="1 0.92 0.72 1" emission="1"/>
+    <material name="ring" rgba="1 0.88 0.66 1" emission="0.55"/>
 @@MESHES@@
 @@CAD@@
   </asset>
@@ -188,19 +188,15 @@ XML = f"""<!--
         {cad("belly", 1, "shell", "0.01 0 0")}
         {g("box", material="rib", pos="0.01 0 0.415", size="0.135 0.145 0.008")}
         {cad("yoke", 1, "frame", "0.005 0 0")}
-        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0", density="@@RHO_BATT@@")}
-        {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0.14", density="@@RHO_BATT@@")}
-        {g("capsule", material="frame", fromto="-0.03 0.12 0.57 -0.18 0.12 0.57", size="0.013")}
-        {g("capsule", material="frame", fromto="-0.03 -0.12 0.57 -0.18 -0.12 0.57", size="0.013")}
-        {g("capsule", material="frame", fromto="-0.18 0.12 0.57 -0.18 0.12 0.44", size="0.013")}
-        {g("capsule", material="frame", fromto="-0.18 -0.12 0.57 -0.18 -0.12 0.44", size="0.013")}
-        {g("capsule", material="frame", fromto="-0.18 0.12 0.44 -0.18 -0.12 0.44", size="0.013")}
+        {g("mesh", mesh="battery", material="shell", pos="-0.17 0 0.21", density="@@RHO_BATT@@")}
+        {g("mesh", mesh="battery", material="shell", pos="-0.17 0 0.35", density="@@RHO_BATT@@")}
+        {cad("handle", 1, "frame", "0 0 0")}
         <site name="imu_in_torso" pos="0 0 0.33"/>
 
         <body name="head" pos="0 0 0.52">
           <joint name="neck_yaw_joint" axis="0 0 1"/>
           {g("sphere", "collision", name="head_collision", pos="0.03 0 0.221", size="0.1")}
-          {g("box", material="frame", pos="0 0 0.09", size="0.04 0.045 0.04")}
+          {g("box", material="frame", pos="0 0 0.09", size="0.055 0.07 0.04")}
           {cad("head_shell", 1, "shell", "0.03 0 0.221")}
           {cad("head_ring", 1, "ring", "0.03 0 0.221")}
           {cad("head_face", 1, "face", "0.03 0 0.221")}

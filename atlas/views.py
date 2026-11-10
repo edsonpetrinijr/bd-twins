@@ -27,13 +27,10 @@ VIEWS = [
     ("head+shoulders", "pf_73.jpg", (330, 0, 1590, 1080), 180, 8, 1.62, 1.7, STAND),
 ]
 
-spec = mujoco.MjSpec.from_file(str(Path(__file__).parent / "atlas.xml"))
-spec.visual.global_.offwidth, spec.visual.global_.offheight = 1200, 1200
+from stage import stage
+
+spec = stage(mujoco.MjSpec.from_file(str(Path(__file__).parent / "atlas.xml")))
 spec.visual.global_.fovy = 30
-spec.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[4, 4, 0.1], rgba=[0.3, 0.31, 0.33, 1])
-spec.worldbody.add_light(pos=[1.5, -1.5, 3.5], dir=[-0.4, 0.4, -1], diffuse=[0.9, 0.9, 0.9])
-spec.worldbody.add_light(pos=[-2, 2, 3], dir=[0.5, -0.5, -1], diffuse=[0.5, 0.5, 0.55])
-spec.worldbody.add_light(pos=[3, 0, 1.5], dir=[-1, 0, -0.2], diffuse=[0.4, 0.4, 0.4])
 m = spec.compile()
 d = mujoco.MjData(m)
 opt = mujoco.MjvOption()

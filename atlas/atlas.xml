@@ -13,14 +13,14 @@
   </default>
 
   <asset>
-    <material name="shell" specular="0.4" rgba="0.45 0.56 0.82 1"/>
-    <material name="frame" specular="0.3" shininess="0.4" rgba="0.16 0.16 0.18 1"/>
+    <material name="shell" specular="0.3" shininess="0.45" rgba="0.4 0.5 0.7 1"/>
+    <material name="frame" specular="0.25" shininess="0.35" rgba="0.13 0.13 0.15 1"/>
     <material name="rib" specular="0.1" rgba="0.1 0.1 0.11 1"/>
     <material name="sole" rgba="0.08 0.08 0.08 1"/>
     <material name="face" specular="0.15" shininess="0.3" rgba="0.02 0.02 0.025 1"/>
-    <material name="ring" emission="1" rgba="1 0.92 0.72 1"/>
-    <mesh name="battery" vertex="0.05 0.1 0.25 0.0493 0.1052 0.25 0.0473 0.11 0.25 0.0441 0.1141 0.25 0.04 0.1173 0.25 0.0352 0.1193 0.25 0.03 0.12 0.25 -0.0352 0.1193 0.25 -0.04 0.1173 0.25 -0.0441 0.1141 0.25 -0.0473 0.11 0.25 -0.0493 0.1052 0.25 -0.05 0.1 0.25 -0.0493 -0.1052 0.25 -0.0473 -0.11 0.25 -0.0441 -0.1141 0.25 -0.04 -0.1173 0.25 -0.0352 -0.1193 0.25 -0.03 -0.12 0.25 0.0352 -0.1193 0.25 0.04 -0.1173 0.25 0.0441 -0.1141 0.25 0.0473 -0.11 0.25 0.0493 -0.1052 0.25 0.0485 0.1 0.2577 0.0478 0.1048 0.2577 0.046 0.1092 0.2577 0.0431 0.1131 0.2577 0.0392 0.116 0.2577 0.0348 0.1178 0.2577 0.03 0.1185 0.2577 -0.0348 0.1178 0.2577 -0.0392 0.116 0.2577 -0.0431 0.1131 0.2577 -0.046 0.1092 0.2577 -0.0478 0.1048 0.2577 -0.0485 0.1 0.2577 -0.0478 -0.1048 0.2577 -0.046 -0.1092 0.2577 -0.0431 -0.1131 0.2577 -0.0392 -0.116 0.2577 -0.0348 -0.1178 0.2577 -0.03 -0.1185 0.2577 0.0348 -0.1178 0.2577 0.0392 -0.116 0.2577 0.0431 -0.1131 0.2577 0.046 -0.1092 0.2577 0.0478 -0.1048 0.2577 0.0441 0.1 0.2641 0.0437 0.1037 0.2641 0.0422 0.1071 0.2641 0.04 0.11 0.2641 0.0371 0.1122 0.2641 0.0337 0.1137 0.2641 0.03 0.1141 0.2641 -0.0337 0.1137 0.2641 -0.0371 0.1122 0.2641 -0.04 0.11 0.2641 -0.0422 0.1071 0.2641 -0.0437 0.1037 0.2641 -0.0441 0.1 0.2641 -0.0437 -0.1037 0.2641 -0.0422 -0.1071 0.2641 -0.04 -0.11 0.2641 -0.0371 -0.1122 0.2641 -0.0337 -0.1137 0.2641 -0.03 -0.1141 0.2641 0.0337 -0.1137 0.2641 0.0371 -0.1122 0.2641 0.04 -0.11 0.2641 0.0422 -0.1071 0.2641 0.0437 -0.1037 0.2641 0.0377 0.1 0.2685 0.0374 0.102 0.2685 0.0366 0.1038 0.2685 0.0354 0.1054 0.2685 0.0338 0.1066 0.2685 0.032 0.1074 0.2685 0.03 0.1077 0.2685 -0.032 0.1074 0.2685 -0.0338 0.1066 0.2685 -0.0354 0.1054 0.2685 -0.0366 0.1038 0.2685 -0.0374 0.102 0.2685 -0.0377 0.1 0.2685 -0.0374 -0.102 0.2685 -0.0366 -0.1038 0.2685 -0.0354 -0.1054 0.2685 -0.0338 -0.1066 0.2685 -0.032 -0.1074 0.2685 -0.03 -0.1077 0.2685 0.032 -0.1074 0.2685 0.0338 -0.1066 0.2685 0.0354 -0.1054 0.2685 0.0366 -0.1038 0.2685 0.0374 -0.102 0.2685 0.03 0.1 0.27 0.03 0.1 0.27 0.03 0.1 0.27 0.03 0.1 0.27 0.03 0.1 0.27 0.03 0.1 0.27 0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 0.1 0.27 -0.03 -0.1 0.27 -0.03 -0.1 0.27 -0.03 -0.1 0.27 -0.03 -0.1 0.27 -0.03 -0.1 0.27 -0.03 -0.1 0.27 0.03 -0.1 0.27 0.03 -0.1 0.27 0.03 -0.1 0.27 0.03 -0.1 0.27 0.03 -0.1 0.27 0.055 0.1 0.16 0.0543 0.1052 0.16 0.0523 0.11 0.16 0.0491 0.1141 0.16 0.045 0.1173 0.16 0.0402 0.1193 0.16 0.035 0.12 0.16 -0.0402 0.1193 0.16 -0.045 0.1173 0.16 -0.0491 0.1141 0.16 -0.0523 0.11 0.16 -0.0543 0.1052 0.16 -0.055 0.1 0.16 -0.0543 -0.1052 0.16 -0.0523 -0.11 0.16 -0.0491 -0.1141 0.16 -0.045 -0.1173 0.16 -0.0402 -0.1193 0.16 -0.035 -0.12 0.16 0.0402 -0.1193 0.16 0.045 -0.1173 0.16 0.0491 -0.1141 0.16 0.0523 -0.11 0.16 0.0543 -0.1052 0.16 0.0535 0.1 0.1523 0.0528 0.1048 0.1523 0.051 0.1092 0.1523 0.0481 0.1131 0.1523 0.0442 0.116 0.1523 0.0398 0.1178 0.1523 0.035 0.1185 0.1523 -0.0398 0.1178 0.1523 -0.0442 0.116 0.1523 -0.0481 0.1131 0.1523 -0.051 0.1092 0.1523 -0.0528 0.1048 0.1523 -0.0535 0.1 0.1523 -0.0528 -0.1048 0.1523 -0.051 -0.1092 0.1523 -0.0481 -0.1131 0.1523 -0.0442 -0.116 0.1523 -0.0398 -0.1178 0.1523 -0.035 -0.1185 0.1523 0.0398 -0.1178 0.1523 0.0442 -0.116 0.1523 0.0481 -0.1131 0.1523 0.051 -0.1092 0.1523 0.0528 -0.1048 0.1523 0.0491 0.1 0.1459 0.0487 0.1037 0.1459 0.0472 0.1071 0.1459 0.045 0.11 0.1459 0.0421 0.1122 0.1459 0.0387 0.1137 0.1459 0.035 0.1141 0.1459 -0.0387 0.1137 0.1459 -0.0421 0.1122 0.1459 -0.045 0.11 0.1459 -0.0472 0.1071 0.1459 -0.0487 0.1037 0.1459 -0.0491 0.1 0.1459 -0.0487 -0.1037 0.1459 -0.0472 -0.1071 0.1459 -0.045 -0.11 0.1459 -0.0421 -0.1122 0.1459 -0.0387 -0.1137 0.1459 -0.035 -0.1141 0.1459 0.0387 -0.1137 0.1459 0.0421 -0.1122 0.1459 0.045 -0.11 0.1459 0.0472 -0.1071 0.1459 0.0487 -0.1037 0.1459 0.0427 0.1 0.1415 0.0424 0.102 0.1415 0.0416 0.1038 0.1415 0.0404 0.1054 0.1415 0.0388 0.1066 0.1415 0.037 0.1074 0.1415 0.035 0.1077 0.1415 -0.037 0.1074 0.1415 -0.0388 0.1066 0.1415 -0.0404 0.1054 0.1415 -0.0416 0.1038 0.1415 -0.0424 0.102 0.1415 -0.0427 0.1 0.1415 -0.0424 -0.102 0.1415 -0.0416 -0.1038 0.1415 -0.0404 -0.1054 0.1415 -0.0388 -0.1066 0.1415 -0.037 -0.1074 0.1415 -0.035 -0.1077 0.1415 0.037 -0.1074 0.1415 0.0388 -0.1066 0.1415 0.0404 -0.1054 0.1415 0.0416 -0.1038 0.1415 0.0424 -0.102 0.1415 0.035 0.1 0.14 0.035 0.1 0.14 0.035 0.1 0.14 0.035 0.1 0.14 0.035 0.1 0.14 0.035 0.1 0.14 0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 0.1 0.14 -0.035 -0.1 0.14 -0.035 -0.1 0.14 -0.035 -0.1 0.14 -0.035 -0.1 0.14 -0.035 -0.1 0.14 -0.035 -0.1 0.14 0.035 -0.1 0.14 0.035 -0.1 0.14 0.035 -0.1 0.14 0.035 -0.1 0.14 0.035 -0.1 0.14"/>
+    <material name="ring" emission="0.55" rgba="1 0.88 0.66 1"/>
     <mesh name="ankle_drum" file="meshes/ankle_drum.stl"/>
+    <mesh name="battery" file="meshes/battery.stl"/>
     <mesh name="belly" file="meshes/belly.stl"/>
     <mesh name="elbow_drum" file="meshes/elbow_drum.stl"/>
     <mesh name="elbow_ribs" file="meshes/elbow_ribs.stl"/>
@@ -31,6 +31,7 @@
     <mesh name="hand_frame_r" file="meshes/hand_frame_r.stl"/>
     <mesh name="hand_plate_l" file="meshes/hand_plate_l.stl"/>
     <mesh name="hand_plate_r" file="meshes/hand_plate_r.stl"/>
+    <mesh name="handle" file="meshes/handle.stl"/>
     <mesh name="head_face" file="meshes/head_face.stl"/>
     <mesh name="head_ring" file="meshes/head_ring.stl"/>
     <mesh name="head_shell" file="meshes/head_shell.stl"/>
@@ -55,103 +56,99 @@
       <geom class="visual" pos="0 0 0.02" quat="1 0 0 0" type="mesh" density="2133.34" material="frame" mesh="pelvis_drum_low"/>
       <geom class="visual" pos="0 0 0.13" quat="1 0 0 0" type="mesh" density="2133.34" material="frame" mesh="pelvis_drum_high"/>
       <site name="imu_in_pelvis" pos="0 0 0.05"/>
-      <body name="left_hip" pos="0 0.11 0.08">
+      <body name="left_hip" pos="0 0.12 0.08">
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <joint name="left_hip_yaw_joint" pos="0 0 0" axis="0 0 1"/>
         <joint name="left_hip_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.5 0.5"/>
         <body name="left_thigh" pos="0 0 -0.08">
-          <inertial pos="-0.00307286 0.00625854 -0.18106" quat="0.733937 -0.004672 0.0362126 0.678236" mass="8.5" diaginertia="0.187265 0.183647 0.0149587"/>
+          <inertial pos="-0.00478674 0.00613371 -0.185411" quat="0.731391 -0.00112263 0.043245 0.680585" mass="8.5" diaginertia="0.182564 0.17781 0.0225318"/>
           <joint name="left_hip_pitch_joint" pos="0 0 0" axis="0 1 0" range="-2.2 0.6"/>
-          <geom name="left_thigh_collision" class="collision" size="0.05 0.2335" pos="0 0 -0.2335" type="capsule"/>
-          <geom class="visual" pos="0 0.03 0" quat="1 0 0 0" type="mesh" density="1359.1" material="frame" mesh="hip_drum"/>
-          <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="1359.1" material="shell" mesh="thigh_shell"/>
-          <geom class="visual" pos="-0.04 0 -0.34" type="mesh" density="1359.1" material="rib" mesh="thigh_motor"/>
+          <geom name="left_thigh_collision" class="collision" size="0.045 0.2335" pos="0 0 -0.2335" type="capsule"/>
+          <geom class="visual" pos="0 0.035 0" quat="1 0 0 0" type="mesh" density="868.454" material="frame" mesh="hip_drum"/>
+          <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="868.454" material="shell" mesh="thigh_shell"/>
+          <geom class="visual" pos="-0.05 0 -0.33" type="mesh" density="868.454" material="rib" mesh="thigh_motor"/>
           <body name="left_shin" pos="0 0 -0.467">
-            <inertial pos="0.0264178 -0.0102857 -0.120085" quat="0.828557 -0.0650975 0.00258838 0.556101" mass="4" diaginertia="0.0733785 0.070293 0.00791515"/>
+            <inertial pos="0.0266074 -0.0120138 -0.119607" quat="0.860878 -0.0743114 0.00516294 0.503329" mass="4" diaginertia="0.0773853 0.0742103 0.010602"/>
             <joint name="left_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="left_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 0.035 0" quat="1 0 0 0" type="mesh" density="1160.49" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.035 -0.025 0" quat="1 0 0 0" type="mesh" density="1160.49" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 0.045 0" quat="1 0 0 0" type="mesh" density="779.231" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.035 -0.03 0" quat="1 0 0 0" type="mesh" density="779.231" material="frame" mesh="shin_paddle"/>
             <body name="left_foot" pos="0 0 -0.336">
-              <inertial pos="0.0184018 0.00536663 -0.118519" quat="0.376133 0.593682 0.657033 0.272716" mass="1.5" diaginertia="0.0149489 0.0101195 0.00726771"/>
+              <inertial pos="0.0173299 0.00861538 -0.111616" quat="0.625423 -0.318183 -0.175439 0.690526" mass="1.5" diaginertia="0.0156819 0.0105236 0.00759478"/>
               <joint name="left_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="left_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="left_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 0.03 0" quat="1 0 0 0" type="mesh" density="453.058" material="shell" mesh="ankle_drum"/>
-              <geom class="visual" type="mesh" density="453.058" material="frame" mesh="foot"/>
+              <geom class="visual" pos="0 0.038 0" quat="1 0 0 0" type="mesh" density="426.667" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" type="mesh" density="426.667" material="frame" mesh="foot"/>
               <site name="left_foot" pos="0.04 0 -0.196"/>
             </body>
           </body>
         </body>
       </body>
-      <body name="right_hip" pos="0 -0.11 0.08">
+      <body name="right_hip" pos="0 -0.12 0.08">
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <joint name="right_hip_yaw_joint" pos="0 0 0" axis="0 0 1"/>
         <joint name="right_hip_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.5 0.5"/>
         <body name="right_thigh" pos="0 0 -0.08">
-          <inertial pos="-0.00307285 -0.00625849 -0.18106" quat="0.67823 0.036212 -0.00467161 0.733942" mass="8.5" diaginertia="0.187265 0.183647 0.0149588"/>
+          <inertial pos="-0.00478673 -0.00613384 -0.185411" quat="0.680621 0.0432457 -0.00112108 0.731358" mass="8.5" diaginertia="0.182564 0.17781 0.0225318"/>
           <joint name="right_hip_pitch_joint" pos="0 0 0" axis="0 1 0" range="-2.2 0.6"/>
-          <geom name="right_thigh_collision" class="collision" size="0.05 0.2335" pos="0 0 -0.2335" type="capsule"/>
-          <geom class="visual" pos="0 -0.03 0" quat="1.7949e-09 0 0 1" type="mesh" density="1359.1" material="frame" mesh="hip_drum"/>
-          <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="1359.1" material="shell" mesh="thigh_shell"/>
-          <geom class="visual" pos="-0.04 0 -0.34" type="mesh" density="1359.1" material="rib" mesh="thigh_motor"/>
+          <geom name="right_thigh_collision" class="collision" size="0.045 0.2335" pos="0 0 -0.2335" type="capsule"/>
+          <geom class="visual" pos="0 -0.035 0" quat="1.7949e-09 0 0 1" type="mesh" density="868.454" material="frame" mesh="hip_drum"/>
+          <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="868.454" material="shell" mesh="thigh_shell"/>
+          <geom class="visual" pos="-0.05 0 -0.33" type="mesh" density="868.454" material="rib" mesh="thigh_motor"/>
           <body name="right_shin" pos="0 0 -0.467">
-            <inertial pos="0.0264177 0.0102857 -0.120085" quat="0.556101 0.00258813 -0.0650977 0.828558" mass="4" diaginertia="0.0733785 0.070293 0.00791515"/>
+            <inertial pos="0.0266073 0.0120138 -0.119607" quat="0.503329 0.00516267 -0.0743115 0.860878" mass="4" diaginertia="0.0773853 0.0742103 0.010602"/>
             <joint name="right_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="right_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 -0.035 0" quat="1.7949e-09 0 0 1" type="mesh" density="1160.49" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.035 0.025 0" quat="1 0 0 0" type="mesh" density="1160.49" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 -0.045 0" quat="1.7949e-09 0 0 1" type="mesh" density="779.231" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.035 0.03 0" quat="1 0 0 0" type="mesh" density="779.231" material="frame" mesh="shin_paddle"/>
             <body name="right_foot" pos="0 0 -0.336">
-              <inertial pos="0.0184018 -0.00536659 -0.118519" quat="0.272716 0.657033 0.593682 0.376133" mass="1.5" diaginertia="0.0149489 0.0101195 0.00726771"/>
+              <inertial pos="0.0173299 -0.00861535 -0.111616" quat="0.690526 -0.175439 -0.318183 0.625423" mass="1.5" diaginertia="0.0156819 0.0105236 0.00759477"/>
               <joint name="right_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="right_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="right_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 -0.03 0" quat="1.7949e-09 0 0 1" type="mesh" density="453.058" material="shell" mesh="ankle_drum"/>
-              <geom class="visual" type="mesh" density="453.058" material="frame" mesh="foot"/>
+              <geom class="visual" pos="0 -0.038 0" quat="1.7949e-09 0 0 1" type="mesh" density="426.667" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" type="mesh" density="426.667" material="frame" mesh="foot"/>
               <site name="right_foot" pos="0.04 0 -0.196"/>
             </body>
           </body>
         </body>
       </body>
       <body name="torso" pos="0 0 0.06">
-        <inertial pos="-0.0436125 5.65222e-05 0.332089" quat="0.699344 0.107897 0.107775 0.698327" mass="36" diaginertia="0.978832 0.860487 0.533191"/>
+        <inertial pos="-0.0557753 2.50231e-07 0.333514" quat="0.696135 0.124081 0.124081 0.696135" mass="36" diaginertia="0.986539 0.852247 0.582815"/>
         <joint name="waist_yaw_joint" pos="0 0 0" axis="0 0 1"/>
         <geom name="torso_collision" class="collision" size="0.13 0.15 0.27" pos="0 0 0.33" type="box"/>
-        <geom class="visual" type="mesh" density="688.069" material="frame" mesh="waist"/>
-        <geom class="visual" size="0.004 0.09 0.045" pos="0.088 0 0.125" type="box" density="688.069" material="rib"/>
-        <geom class="visual" pos="0.01 0 0" quat="1 0 0 0" type="mesh" density="688.069" material="shell" mesh="belly"/>
-        <geom class="visual" size="0.135 0.145 0.008" pos="0.01 0 0.415" type="box" density="688.069" material="rib"/>
-        <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="688.069" material="frame" mesh="yoke"/>
-        <geom class="visual" pos="-0.16 0 0" quat="1 0 0 0" type="mesh" density="1720.17" material="shell" mesh="battery"/>
-        <geom class="visual" pos="-0.16 0 0.14" quat="1 0 0 0" type="mesh" density="1720.17" material="shell" mesh="battery"/>
-        <geom class="visual" size="0.013 0.075" pos="-0.105 0.12 0.57" quat="0.707107 0 0.707107 0" type="capsule" density="688.069" material="frame"/>
-        <geom class="visual" size="0.013 0.075" pos="-0.105 -0.12 0.57" quat="0.707107 0 0.707107 0" type="capsule" density="688.069" material="frame"/>
-        <geom class="visual" size="0.013 0.065" pos="-0.18 0.12 0.505" type="capsule" density="688.069" material="frame"/>
-        <geom class="visual" size="0.013 0.065" pos="-0.18 -0.12 0.505" type="capsule" density="688.069" material="frame"/>
-        <geom class="visual" size="0.013 0.12" pos="-0.18 0 0.44" quat="0.707107 -0.707107 0 0" type="capsule" density="688.069" material="frame"/>
+        <geom class="visual" type="mesh" density="629.012" material="frame" mesh="waist"/>
+        <geom class="visual" size="0.004 0.09 0.045" pos="0.088 0 0.125" type="box" density="629.012" material="rib"/>
+        <geom class="visual" pos="0.01 0 0" quat="1 0 0 0" type="mesh" density="629.012" material="shell" mesh="belly"/>
+        <geom class="visual" size="0.135 0.145 0.008" pos="0.01 0 0.415" type="box" density="629.012" material="rib"/>
+        <geom class="visual" pos="0.005 0 0" quat="1 0 0 0" type="mesh" density="629.012" material="frame" mesh="yoke"/>
+        <geom class="visual" pos="-0.17 0 0.21" quat="1 0 0 0" type="mesh" density="1572.53" material="shell" mesh="battery"/>
+        <geom class="visual" pos="-0.17 0 0.35" quat="1 0 0 0" type="mesh" density="1572.53" material="shell" mesh="battery"/>
+        <geom class="visual" type="mesh" density="629.012" material="frame" mesh="handle"/>
         <site name="imu_in_torso" pos="0 0 0.33"/>
         <body name="head" pos="0 0 0.52">
-          <inertial pos="0.0436899 -9.79837e-09 0.212454" quat="0.573715 0.413337 0.413316 0.573736" mass="4" diaginertia="0.0313759 0.0276056 0.0227803"/>
+          <inertial pos="0.0406355 -9.11335e-09 0.203893" quat="0.647804 0.283455 0.283442 0.647815" mass="4" diaginertia="0.0341267 0.029344 0.0238479"/>
           <joint name="neck_yaw_joint" pos="0 0 0" axis="0 0 1"/>
           <geom name="head_collision" class="collision" size="0.1" pos="0.03 0 0.221"/>
-          <geom class="visual" size="0.04 0.045 0.04" pos="0 0 0.09" type="box" density="458.332" material="frame"/>
-          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="458.332" material="shell" mesh="head_shell"/>
-          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="458.332" material="ring" mesh="head_ring"/>
-          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="458.332" material="face" mesh="head_face"/>
-          <geom class="visual" size="0.004 0.042 0.011" pos="0.138 0 0.206" type="box" density="458.332" material="frame"/>
-          <geom class="visual" size="0.008 0.025" pos="-0.06 0 0.33" type="cylinder" density="458.332" material="ring"/>
+          <geom class="visual" size="0.055 0.07 0.04" pos="0 0 0.09" type="box" density="426.29" material="frame"/>
+          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="426.29" material="shell" mesh="head_shell"/>
+          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="426.29" material="ring" mesh="head_ring"/>
+          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="426.29" material="face" mesh="head_face"/>
+          <geom class="visual" size="0.004 0.042 0.011" pos="0.138 0 0.206" type="box" density="426.29" material="frame"/>
+          <geom class="visual" size="0.008 0.025" pos="-0.06 0 0.33" type="cylinder" density="426.29" material="ring"/>
         </body>
         <body name="left_upper_arm" pos="0 0.205 0.514">
-          <inertial pos="2.49392e-06 -6.12602e-09 -0.10967" quat="1 -7.6704e-10 1.91386e-05 -4.00781e-05" mass="3.2" diaginertia="0.0320702 0.03175 0.00676628"/>
+          <inertial pos="2.65705e-06 -3.45004e-08 -0.115313" quat="1 -1.1216e-09 1.87941e-05 -5.9678e-05" mass="3.2" diaginertia="0.0343176 0.03394 0.00667851"/>
           <joint name="left_shoulder_pitch_joint" pos="0 0 0" axis="0 1 0" range="-3.1 3.1"/>
           <joint name="left_shoulder_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.3 3"/>
           <joint name="left_shoulder_yaw_joint" pos="0 0 0" axis="0 0 1" range="-2.6 2.6"/>
           <geom name="left_upper_arm_collision" class="collision" size="0.05 0.13" pos="0 0 -0.18" type="capsule"/>
-          <geom class="visual" type="mesh" density="671.228" material="frame" mesh="shoulder"/>
-          <geom class="visual" type="mesh" density="671.228" material="shell" mesh="upper_arm_shell"/>
-          <geom class="visual" pos="0 0 -0.25" quat="1 0 0 0" type="mesh" density="671.228" material="rib" mesh="elbow_ribs"/>
+          <geom class="visual" type="mesh" density="717.446" material="frame" mesh="shoulder"/>
+          <geom class="visual" type="mesh" density="717.446" material="shell" mesh="upper_arm_shell"/>
+          <geom class="visual" pos="0 0 -0.25" quat="1 0 0 0" type="mesh" density="717.446" material="rib" mesh="elbow_ribs"/>
           <body name="left_forearm" pos="0 0 -0.31">
             <inertial pos="0.00381905 2.83304e-06 -0.100632" quat="0.707108 -0.00656972 -0.0065397 0.707045" mass="2" diaginertia="0.0160261 0.0159787 0.00299719"/>
             <joint name="left_elbow_joint" pos="0 0 0" axis="0 1 0" range="-2.6 0"/>
@@ -173,14 +170,14 @@
           </body>
         </body>
         <body name="right_upper_arm" pos="0 -0.205 0.514">
-          <inertial pos="2.49392e-06 -6.12602e-09 -0.10967" quat="1 -7.6704e-10 1.91386e-05 -4.00781e-05" mass="3.2" diaginertia="0.0320702 0.03175 0.00676628"/>
+          <inertial pos="2.65705e-06 -3.45004e-08 -0.115313" quat="1 -1.1216e-09 1.87941e-05 -5.9678e-05" mass="3.2" diaginertia="0.0343176 0.03394 0.00667851"/>
           <joint name="right_shoulder_pitch_joint" pos="0 0 0" axis="0 1 0" range="-3.1 3.1"/>
           <joint name="right_shoulder_roll_joint" pos="0 0 0" axis="1 0 0" range="-3 0.3"/>
           <joint name="right_shoulder_yaw_joint" pos="0 0 0" axis="0 0 1" range="-2.6 2.6"/>
           <geom name="right_upper_arm_collision" class="collision" size="0.05 0.13" pos="0 0 -0.18" type="capsule"/>
-          <geom class="visual" type="mesh" density="671.228" material="frame" mesh="shoulder"/>
-          <geom class="visual" type="mesh" density="671.228" material="shell" mesh="upper_arm_shell"/>
-          <geom class="visual" pos="0 0 -0.25" quat="1 0 0 0" type="mesh" density="671.228" material="rib" mesh="elbow_ribs"/>
+          <geom class="visual" type="mesh" density="717.446" material="frame" mesh="shoulder"/>
+          <geom class="visual" type="mesh" density="717.446" material="shell" mesh="upper_arm_shell"/>
+          <geom class="visual" pos="0 0 -0.25" quat="1 0 0 0" type="mesh" density="717.446" material="rib" mesh="elbow_ribs"/>
           <body name="right_forearm" pos="0 0 -0.31">
             <inertial pos="0.00381906 -2.74953e-06 -0.100632" quat="0.706945 -0.00654069 -0.00656867 0.707208" mass="2" diaginertia="0.0160261 0.0159787 0.00299719"/>
             <joint name="right_elbow_joint" pos="0 0 0" axis="0 1 0" range="-2.6 0"/>

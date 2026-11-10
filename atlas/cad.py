@@ -9,7 +9,7 @@ from pathlib import Path
 
 from build123d import (
     Axis, Box, BuildPart, BuildSketch, Circle, Cylinder, Locations, Mode, Plane, RectangleRounded, Rot,
-    export_stl, extrude, fillet, loft, make_hull,
+    Polyline, Rectangle, Transition, export_stl, extrude, fillet, loft, make_hull, sweep, BuildLine,
 )
 
 OUT = Path(__file__).parent / "meshes"
@@ -162,20 +162,53 @@ def foot():
     return blk.part + top + heel + toe
 
 
+def yoke():
+    """Upper torso: three lofted sections so the top rolls down into the shoulders (dome, not a box)."""
+    with BuildPart() as p:
+        for z, (dx, dy), c in ((0.42, (0.28, 0.304), 0.05), (0.53, (0.27, 0.296), 0.05), (0.6, (0.17, 0.18), 0.05)):
+            with BuildSketch(Plane.XY.offset(z)):
+                RectangleRounded(dx, dy, c)
+        loft()
+        fillet(p.edges().group_by(Axis.Z)[-1], 0.035)
+    return p.part
+
+
+def battery():
+    """Swappable battery module on the back: rounded block with a grip slot and side rails."""
+    body = rbox(0.1, 0.24, 0.13, 0.015)
+    with BuildPart() as slot:
+        with Locations((-0.05, 0, 0.0)):
+            Box(0.02, 0.12, 0.022)
+    rails = rbox(0.09, 0.012, 0.12, 0.004, at=(0.0, 0.126, 0)) + rbox(0.09, 0.012, 0.12, 0.004, at=(0.0, -0.126, 0))
+    return body - slot.part + rails
+
+
+def handle():
+    """Carry handle over the back: one bent tube (U seen from above, dropping to the back)."""
+    with BuildPart() as p:
+        with BuildLine() as path:
+            Polyline((-0.03, 0.12, 0.57), (-0.17, 0.12, 0.57), (-0.17, 0.12, 0.45), (-0.17, -0.12, 0.45),
+                     (-0.17, -0.12, 0.57), (-0.03, -0.12, 0.57))
+        with BuildSketch(Plane(origin=(-0.03, 0.12, 0.57), z_dir=(-1, 0, 0))):
+            Circle(0.013)
+        sweep(transition=Transition.ROUND)
+    return p.part
+
+
 if __name__ == "__main__":
-    save(paddle(length=0.336, r_top=0.066, r_bot=0.058, thick=0.05, edge=0.014), "shin_paddle")
-    save(drum(r=0.062, width=0.07, hub_r=0.03, hub_depth=0.012, edge=0.008), "knee_drum")
-    save(drum(r=0.056, width=0.06, hub_r=0.028, hub_depth=0.011, edge=0.007), "ankle_drum")
-    save(drum(r=0.068, width=0.09, hub_r=0.032, hub_depth=0.012, edge=0.009), "hip_drum")
+    save(paddle(length=0.336, r_top=0.074, r_bot=0.064, thick=0.066, edge=0.018), "shin_paddle")
+    save(drum(r=0.07, width=0.08, hub_r=0.034, hub_depth=0.013, edge=0.009), "knee_drum")
+    save(drum(r=0.062, width=0.066, hub_r=0.03, hub_depth=0.012, edge=0.008), "ankle_drum")
+    save(drum(r=0.074, width=0.1, hub_r=0.034, hub_depth=0.013, edge=0.01), "hip_drum")
     save(drum(r=0.062, width=0.11, hub_r=0.03, hub_depth=0.012, edge=0.009), "elbow_drum")
-    save(tube(0.0, -0.42, (0.12, 0.096), (0.104, 0.088), 0.03, 0.015), "thigh_shell")
-    save(ribbed(0.036, 0.18, 9, 0.006), "thigh_motor")
-    save(tube(-0.06, -0.23, (0.144, 0.132), (0.12, 0.116), 0.035, 0.02), "upper_arm_shell")
+    save(tube(0.0, -0.42, (0.15, 0.13), (0.13, 0.112), 0.04, 0.018), "thigh_shell")
+    save(ribbed(0.045, 0.19, 9, 0.007), "thigh_motor")
+    save(tube(-0.085, -0.235, (0.144, 0.132), (0.12, 0.116), 0.035, 0.02), "upper_arm_shell")
     save(ribbed(0.05, 0.08, 4, 0.006), "elbow_ribs")
     save(tube(-0.04, -0.245, (0.1, 0.094), (0.086, 0.082), 0.038, 0.012), "forearm_core")
     save(tube(-0.06, -0.215, (0.108, 0.108), (0.084, 0.092), 0.025, 0.012), "forearm_shell")
     save(tube(0.41, 0.18, (0.28, 0.296), (0.26, 0.272), 0.045, 0.012), "belly")
-    save(dome(0.42, 0.60, (0.28, 0.304), (0.25, 0.28), 0.05, 0.045), "yoke")
+    save(yoke(), "yoke")
     save(tube(0.19, 0.06, (0.18, 0.22), (0.17, 0.2), 0.03, 0.01), "waist")
     save(ribbed(0.06, 0.15, 6, 0.006, axis_y=True), "pelvis_drum_low")
     save(ribbed(0.055, 0.17, 7, 0.006, axis_y=True), "pelvis_drum_high")
@@ -189,3 +222,5 @@ if __name__ == "__main__":
         save(hf, f"hand_frame_{tag}")
         save(hp, f"hand_plate_{tag}")
     save(foot(), "foot")
+    save(battery(), "battery")
+    save(handle(), "handle")
