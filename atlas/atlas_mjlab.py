@@ -189,7 +189,7 @@ def atlas_ppo_cfg() -> RslRlOnPolicyRunnerCfg:
         experiment_name="atlas_velocity",
         save_interval=50,
         num_steps_per_env=24,
-        max_iterations=30_000,
+        max_iterations=3_000,  # flat walking converges in ~1.5-3k; raise for rough terrain
     )
 
 
