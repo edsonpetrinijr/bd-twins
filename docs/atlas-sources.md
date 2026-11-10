@@ -115,3 +115,6 @@ First try (uniform density over the shells) gave a 7 kg shin and a 4 kg forearm 
 - `atlas/atlas_mjlab.py` registers `Mjlab-Velocity-Flat-BD-Atlas` and `Mjlab-Velocity-Rough-BD-Atlas` on mjlab's velocity-tracking task.
 - Smoke test on Mac CPU: env builds, 28 actions, 200 steps with zero action, no NaN, no fall. Pelvis sags 5–10 cm with zero action (PD at 10 Hz is soft under 90 kg); a trained policy compensates.
 - mjlab pinned to the BD fork commit in `requirements.txt`.
+
+## v0.8 (09/nov): narrower shoulders
+Edson: shoulders looked too wide. The front close-up widths (shoulder 0.25, torso ±0.175) were all measured in head-ring units with ring Ø = 0.20 m assumed; scaled torso widths by ~0.85 instead: shoulder 0.205 m, belly ±0.148, yoke ±0.152, hips 0.11 m. Collision radii trimmed so the hanging forearm still clears the thigh and the upper arm clears the torso.

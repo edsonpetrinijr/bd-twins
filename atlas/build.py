@@ -13,9 +13,9 @@ HIP_ROLL_DZ = 0.08         # hip yaw/roll point sits above the pitch axis (front
 THIGH, SHIN, ANKLE = 0.467, 0.336, 0.196
 WAIST_DZ = 0.06            # waist yaw above pelvis origin
 SHOULDER_DZ = 0.514        # shoulder axis above waist -> 1.573 m (front close-up, product video)
-SHOULDER_Y = 0.23          # shoulder actuator center, lateral (front close-up)
+SHOULDER_Y = 0.205         # shoulder actuator center, lateral (v0.8: 0.23 looked too wide; all torso widths scaled ~0.85)
 ARM_OUT = 0.0              # arm hangs straight below the shoulder actuator
-HIP_Y = 0.13               # hip discs on the pelvis front (front photo says ~0.16; 0.14 keeps arms clear of thighs)
+HIP_Y = 0.11               # hip spacing (keeps the hanging forearm clear of the thigh)
 UPPER_ARM, FOREARM = 0.31, 0.28
 
 MESHES = {}
@@ -74,7 +74,7 @@ def leg(s, side):
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <body name="{side}_thigh" pos="0 0 -{HIP_ROLL_DZ}">
           <joint name="{side}_hip_pitch_joint" axis="0 1 0" range="-2.2 0.6"/>
-          {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.055")}
+          {g("capsule", "collision", name=f"{side}_thigh_collision", fromto=f"0 0 0 0 0 -{THIGH}", size="0.05")}
           {joint(s, s*0.03, 0.045, 0.068, "frame")}
           {shell("thigh_shell", -0.42, 0.0, (0.06, 0.048), (0.052, 0.044), 0.03, "shell", "0.005 0 0")}
           {shell("thigh_motor", -0.43, -0.25, (0.035, 0.04), (0.035, 0.04), 0.015, "rib", "-0.035 0 0")}
@@ -111,12 +111,12 @@ def arm(s, side):
           <joint name="{side}_shoulder_roll_joint" axis="1 0 0" range="{roll}"/>
           <joint name="{side}_shoulder_yaw_joint" axis="0 0 1" range="-2.6 2.6"/>
           {g("capsule", "collision", name=f"{side}_upper_arm_collision", fromto=f"0 {o} -0.05 0 {o} -{UPPER_ARM}", size="0.05")}
-          {g("capsule", material="frame", fromto="-0.05 0 0 0.05 0 0", size="0.082")}
+          {g("capsule", material="frame", fromto="-0.045 0 0 0.045 0 0", size="0.074")}
           {shell("upper_arm_shell", -0.23, -0.06, (0.072, 0.066), (0.06, 0.058), 0.03, "shell", f"0 {o} 0")}
           {g("cylinder", material="rib", pos=f"0 {o} -0.25", size="0.05 0.04")}
           <body name="{side}_forearm" pos="0 {o} -{UPPER_ARM}">
             <joint name="{side}_elbow_joint" axis="0 1 0" range="-2.6 0"/>
-            {g("capsule", "collision", name=f"{side}_forearm_collision", fromto=f"0 0 0 0 0 -{FOREARM}", size="0.04")}
+            {g("capsule", "collision", name=f"{side}_forearm_collision", fromto=f"0 0 0 0 0 -{FOREARM}", size="0.038")}
             {joint(s, 0.0, 0.055, 0.062, "frame")}
             {g("capsule", material="frame", fromto="0 0 -0.04 0 0 -0.24", size="0.048")}
             {shell("forearm_shell", -0.215, -0.06, (0.054, 0.054), (0.042, 0.046), 0.025, "shell", "0.01 0 0")}
@@ -171,9 +171,9 @@ XML = f"""<!--
     <body name="pelvis" pos="0 0 {HIP_PITCH_Z}">
       <freejoint name="floating_base_joint"/>
       {g("box", "collision", name="pelvis_collision", pos="0 0 0.05", size="0.08 0.14 0.06")}
-      {g("cylinder", material="frame", pos="0 0 0.02", euler="1.5708 0 0", size="0.06 0.085")}
+      {g("cylinder", material="frame", pos="0 0 0.02", euler="1.5708 0 0", size="0.06 0.075")}
       {g("cylinder", material="rib", pos="0 0 0.02", euler="1.5708 0 0", size="0.062 0.045")}
-      {g("cylinder", material="frame", pos="0 0 0.13", euler="1.5708 0 0", size="0.055 0.1")}
+      {g("cylinder", material="frame", pos="0 0 0.13", euler="1.5708 0 0", size="0.055 0.085")}
       {g("cylinder", material="rib", pos="0 0 0.13", euler="1.5708 0 0", size="0.057 0.05")}
       <site name="imu_in_pelvis" pos="0 0 0.05"/>
 {leg(1, "left")}
@@ -181,12 +181,12 @@ XML = f"""<!--
 
       <body name="torso" pos="0 0 {WAIST_DZ}">
         <joint name="waist_yaw_joint" axis="0 0 1"/>
-        {g("box", "collision", name="torso_collision", pos="0 0 0.33", size="0.13 0.17 0.27")}
-        {shell("waist", 0.06, 0.19, (0.09, 0.125), (0.085, 0.115), 0.03, "frame")}
+        {g("box", "collision", name="torso_collision", pos="0 0 0.33", size="0.13 0.15 0.27")}
+        {shell("waist", 0.06, 0.19, (0.09, 0.11), (0.085, 0.1), 0.03, "frame")}
         {g("box", material="rib", pos="0.088 0 0.125", size="0.004 0.09 0.045")}
-        {shell("belly", 0.18, 0.41, (0.14, 0.175), (0.13, 0.16), 0.04, "shell", "0.01 0 0")}
-        {g("box", material="rib", pos="0.01 0 0.415", size="0.135 0.17 0.008")}
-        {shell("yoke", 0.42, 0.6, (0.125, 0.165), (0.14, 0.18), 0.075, "frame", "0.005 0 0")}
+        {shell("belly", 0.18, 0.41, (0.14, 0.148), (0.13, 0.136), 0.04, "shell", "0.01 0 0")}
+        {g("box", material="rib", pos="0.01 0 0.415", size="0.135 0.145 0.008")}
+        {shell("yoke", 0.42, 0.6, (0.125, 0.14), (0.14, 0.152), 0.07, "frame", "0.005 0 0")}
         {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0", density="@@RHO_BATT@@")}
         {shell("battery", 0.14, 0.27, (0.05, 0.12), (0.055, 0.12), 0.02, "shell", "-0.16 0 0.14", density="@@RHO_BATT@@")}
         {g("capsule", material="frame", fromto="-0.03 0.12 0.57 -0.18 0.12 0.57", size="0.013")}
