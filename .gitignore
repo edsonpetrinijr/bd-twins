@@ -3,3 +3,4 @@ __pycache__/
 *.png
 *.pdf
 MUJOCO_LOG.TXT
+.venv-fleet/
