@@ -148,3 +148,6 @@ Edson: v1.6 hip looked worse, neck too wide, legs still a bit out, black shin sl
 - Hips 0.105 m apart (was 0.12).
 - Shin slab on the outside, knee/ankle drums on the inside (hub facing in).
 - Neck block narrower (0.07 x 0.09 m).
+
+## v1.8 (09/nov): concentric knee/ankle
+Edson's close-up: the round ends of the shin slab were not concentric with the knee and ankle drums (slab sat 25 mm forward). Slab now centered on both axes; shin collision capsule moved with it. `joints_check.py` also checks the slab ends (0 mm).

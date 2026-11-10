@@ -90,9 +90,9 @@ def leg(s, side):
           {cad("thigh_motor", 1, "rib", "-0.03 0 -0.355")}
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
-            {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
+            {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0 0 0 0 0 -{SHIN}", size="0.055")}
             {cad("knee_drum", -s, "shell", f"0 {-s*0.035} 0")}
-            {cad("shin_paddle", 1, "frame", f"0.025 {s*0.028} 0")}
+            {cad("shin_paddle", 1, "frame", f"0 {s*0.028} 0")}  # round ends centered on knee and ankle axes
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>

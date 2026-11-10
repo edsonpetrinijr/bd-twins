@@ -38,4 +38,18 @@ for j in range(m.njnt):
     ok = off < 0.015 and ang < 5
     bad += not ok
     print(f"{jn:26s} {PAIRS[key]:16s} {off*1000:11.0f} {ang:9.0f}{'' if ok else '  <-- off'}")
+# Shin slab: its round ends must be centered on the knee and ankle axes (sagittal offset ~0).
+for side in ("left", "right"):
+    g = next(g for g in range(m.ngeom) if m.geom_bodyid[g] == m.body(f"{side}_shin").id
+             and m.geom_dataid[g] >= 0 and m.mesh(m.geom_dataid[g]).name == "shin_paddle")
+    mid = m.geom_dataid[g]
+    a, n = m.mesh_vertadr[mid], m.mesh_vertnum[mid]
+    v = m.mesh_vert[a:a + n] @ d.geom_xmat[g].reshape(3, 3).T + d.geom_xpos[g]
+    for jn in (f"{side}_knee_joint", f"{side}_ankle_pitch_joint"):
+        p = d.xanchor[m.joint(jn).id]
+        near = v[np.abs(v[:, 2] - p[2]) < 0.005]
+        off = (near[:, 0].min() + near[:, 0].max()) / 2 - p[0]
+        ok = abs(off) < 0.005
+        bad += not ok
+        print(f"{jn:26s} {'shin_paddle':16s} {off*1000:11.0f} {'':>9s}{'' if ok else '  <-- slab end off-center'}")
 print("all joints on their drums" if bad == 0 else f"{bad} joints off their drums")
