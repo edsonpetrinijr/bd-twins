@@ -155,6 +155,7 @@ XML = f"""<!--
     <material name="rib" rgba="0.1 0.1 0.11 1" specular="0.1"/>
     <material name="sole" rgba="0.08 0.08 0.08 1"/>
     <material name="face" rgba="0.02 0.02 0.025 1" specular="0.15" shininess="0.3"/>
+    <material name="camera" rgba="0.24 0.24 0.27 1" specular="0.6" shininess="0.8"/>
     <material name="ring" rgba="1 0.88 0.66 1" emission="0.55"/>
 @@MESHES@@
 @@CAD@@
@@ -201,7 +202,7 @@ XML = f"""<!--
           {cad("head_shell", 1, "shell", "0.03 0 0.221")}
           {cad("head_ring", 1, "ring", "0.03 0 0.221")}
           {cad("head_face", 1, "face", "0.03 0 0.221")}
-          {g("box", material="frame", pos="0.138 0 0.206", size="0.004 0.042 0.011")}
+          {cad("head_camera", 1, "camera", "0.03 0 0.221")}
           {g("cylinder", material="ring", pos="-0.06 0 0.33", size="0.008 0.025")}
         </body>
 {arm(1, "left")}

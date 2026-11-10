@@ -91,22 +91,32 @@ def dome(z_bot, z_top, bot, top, corner, top_fillet):
 
 
 def head():
-    """Head: cylinder along x with soft back edge, recessed front face, light ring proud of the shell."""
+    """Head: cylinder along x with soft back edge, vent slots on the upper back, recessed front face,
+    thick light ring proud of the shell, camera module on the face."""
     with BuildPart() as shell:
         Cylinder(0.1, 0.22, rotation=(0, 90, 0))
         back = shell.edges().sort_by(Axis.X)[0]
         fillet([back], 0.03)
         with Locations((0.11 - 0.012, 0, 0)):
-            Cylinder(0.088, 0.03, rotation=(0, 90, 0), mode=Mode.SUBTRACT)
+            Cylinder(0.082, 0.03, rotation=(0, 90, 0), mode=Mode.SUBTRACT)
+        for k in range(7):  # vent slots across the top-back
+            with Locations((-0.075 + k * 0.012, 0, 0.098)):
+                Box(0.005, 0.11, 0.02, mode=Mode.SUBTRACT)
     with BuildPart() as ring:
-        with Locations((0.112, 0, 0)):
-            Cylinder(0.101, 0.024, rotation=(0, 90, 0))
-            Cylinder(0.084, 0.03, rotation=(0, 90, 0), mode=Mode.SUBTRACT)
-        fillet(ring.edges().sort_by(Axis.X)[-2:], 0.004)
+        with Locations((0.113, 0, 0)):
+            Cylinder(0.102, 0.03, rotation=(0, 90, 0))
+            Cylinder(0.078, 0.04, rotation=(0, 90, 0), mode=Mode.SUBTRACT)
+        fillet(ring.edges().sort_by(Axis.X)[-2:], 0.006)
     with BuildPart() as face:
         with Locations((0.101, 0, 0)):
-            Cylinder(0.086, 0.008, rotation=(0, 90, 0))
-    return shell.part, ring.part, face.part
+            Cylinder(0.08, 0.008, rotation=(0, 90, 0))
+    cam = rbox(0.012, 0.09, 0.026, 0.004, at=(0.108, 0, -0.018))
+    for y in (-0.028, 0.028):
+        with BuildPart() as lens:
+            with Locations((0.114, y, -0.018)):
+                Cylinder(0.008, 0.004, rotation=(0, 90, 0))
+        cam = cam + lens.part
+    return shell.part, ring.part, face.part, cam
 
 
 def rbox(dx, dy, dz, r, at=(0, 0, 0), rot=(0, 0, 0)):
@@ -148,17 +158,17 @@ def hand(side):
 
 
 def foot():
-    """Foot: tapered ankle block, sole plate with heel and toe pads."""
+    """Foot: short tapered ankle block, low sole with a short toe and a heel pad."""
     with BuildPart() as blk:
-        with BuildSketch(Plane.XY.offset(-0.03)):
+        with BuildSketch(Plane.XY.offset(-0.04)):
             RectangleRounded(0.08, 0.07, 0.015)
-        with BuildSketch(Plane.XY.offset(-0.15)):
-            RectangleRounded(0.11, 0.09, 0.02)
+        with BuildSketch(Plane.XY.offset(-0.16)):
+            RectangleRounded(0.12, 0.095, 0.02)
         loft()
         fillet(blk.edges().group_by(Axis.Z)[-1], 0.012)
-    top = rbox(0.27, 0.11, 0.04, 0.012, at=(0.03, 0, -0.155))
-    heel = rbox(0.09, 0.124, 0.03, 0.008, at=(-0.085, 0, -0.181))
-    toe = rbox(0.13, 0.124, 0.03, 0.008, at=(0.125, 0, -0.181))
+    top = rbox(0.25, 0.115, 0.03, 0.01, at=(0.02, 0, -0.165))
+    heel = rbox(0.08, 0.126, 0.022, 0.007, at=(-0.075, 0, -0.185))
+    toe = rbox(0.11, 0.126, 0.022, 0.007, at=(0.1, 0, -0.185))
     return blk.part + top + heel + toe
 
 
@@ -231,10 +241,11 @@ if __name__ == "__main__":
     save(tube(0.19, 0.06, (0.18, 0.22), (0.17, 0.2), 0.03, 0.01), "waist")
     save(ribbed(0.06, 0.15, 6, 0.006, axis_y=True), "pelvis_drum_low")
     save(ribbed(0.055, 0.17, 7, 0.006, axis_y=True), "pelvis_drum_high")
-    hs, hr, hf = head()
+    hs, hr, hf, hc = head()
     save(hs, "head_shell")
     save(hr, "head_ring")
     save(hf, "head_face")
+    save(hc, "head_camera")
     save(shoulder(), "shoulder")
     for side, tag in ((1, "l"), (-1, "r")):
         hf, hp = hand(side)
