@@ -37,7 +37,7 @@ def leg(name, fx, s):
         <body name="{name}_upper_leg" pos="0 {s*HIP_OUT} 0">
           <joint name="{name}_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           {g("capsule", "collision", name=f"{name}_upper_collision", fromto=f"0 0 0 {KNEE[0]} 0 {KNEE[1]}", size="0.04", mass=MASS["upper"])}
-          {mesh("upper_cover", "shell")}
+          {mesh("upper_cover", "shell", f"0 {s*0.005} 0")}
           {mesh("upper_motor", "frame", euler=flip)}
           <body name="{name}_lower_leg" pos="{KNEE[0]} 0 {KNEE[1]}">
             <joint name="{name}_knee" axis="0 1 0" range="-2.7929 -0.2548"/>
@@ -53,7 +53,7 @@ def leg(name, fx, s):
 
 
 LEGS = (("front_left", 1, 1), ("front_right", 1, -1), ("rear_left", -1, 1), ("rear_right", -1, -1))
-PARTS = ("body_shell", "body_core", "face_front", "face_rear", "hip_motor", "upper_cover", "upper_motor",
+PARTS = ("body_shell", "side_details", "body_core", "face_front", "face_rear", "hip_motor", "upper_cover", "upper_motor",
          "shin", "foot", "knee")
 
 XML = f"""<!--
@@ -87,6 +87,7 @@ XML = f"""<!--
       <freejoint name="floating_base_joint"/>
       {g("box", "collision", name="body_collision", size="0.42 0.117 0.075", mass=MASS["body"])}
       {mesh("body_shell", "shell")}
+      {mesh("side_details", "frame")}
       {mesh("body_core", "frame")}
       {mesh("face_front", "face")}
       {mesh("face_rear", "face")}

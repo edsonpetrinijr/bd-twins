@@ -11,6 +11,7 @@
     <material name="face" rgba="0.04 0.04 0.05 1" specular="0.6" shininess="0.7"/>
     <material name="rubber" rgba="0.05 0.05 0.05 1" specular="0.05"/>
     <mesh name="body_shell" file="body_shell.stl"/>
+    <mesh name="side_details" file="side_details.stl"/>
     <mesh name="body_core" file="body_core.stl"/>
     <mesh name="face_front" file="face_front.stl"/>
     <mesh name="face_rear" file="face_rear.stl"/>
@@ -38,6 +39,7 @@
       <freejoint name="floating_base_joint"/>
       <geom class="collision" type="box" name="body_collision" size="0.42 0.117 0.075" mass="15.220000000000006"/>
       <geom class="visual" type="mesh" mesh="body_shell" material="shell" pos="0 0 0" euler="0 0 0"/>
+      <geom class="visual" type="mesh" mesh="side_details" material="frame" pos="0 0 0" euler="0 0 0"/>
       <geom class="visual" type="mesh" mesh="body_core" material="frame" pos="0 0 0" euler="0 0 0"/>
       <geom class="visual" type="mesh" mesh="face_front" material="face" pos="0 0 0" euler="0 0 0"/>
       <geom class="visual" type="mesh" mesh="face_rear" material="face" pos="0 0 0" euler="0 0 0"/>
@@ -50,7 +52,7 @@
         <body name="front_left_upper_leg" pos="0 0.110945 0">
           <joint name="front_left_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="front_left_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>
-          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0 0" euler="0 0 0"/>
+          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0.005 0" euler="0 0 0"/>
           <geom class="visual" type="mesh" mesh="upper_motor" material="frame" pos="0 0 0" euler="0 0 0"/>
           <body name="front_left_lower_leg" pos="0.025 0 -0.3205">
             <joint name="front_left_knee" axis="0 1 0" range="-2.7929 -0.2548"/>
@@ -70,7 +72,7 @@
         <body name="front_right_upper_leg" pos="0 -0.110945 0">
           <joint name="front_right_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="front_right_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>
-          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0 0" euler="0 0 0"/>
+          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 -0.005 0" euler="0 0 0"/>
           <geom class="visual" type="mesh" mesh="upper_motor" material="frame" pos="0 0 0" euler="0 0 3.14159265"/>
           <body name="front_right_lower_leg" pos="0.025 0 -0.3205">
             <joint name="front_right_knee" axis="0 1 0" range="-2.7929 -0.2548"/>
@@ -90,7 +92,7 @@
         <body name="rear_left_upper_leg" pos="0 0.110945 0">
           <joint name="rear_left_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="rear_left_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>
-          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0 0" euler="0 0 0"/>
+          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0.005 0" euler="0 0 0"/>
           <geom class="visual" type="mesh" mesh="upper_motor" material="frame" pos="0 0 0" euler="0 0 0"/>
           <body name="rear_left_lower_leg" pos="0.025 0 -0.3205">
             <joint name="rear_left_knee" axis="0 1 0" range="-2.7929 -0.2548"/>
@@ -110,7 +112,7 @@
         <body name="rear_right_upper_leg" pos="0 -0.110945 0">
           <joint name="rear_right_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="rear_right_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>
-          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 0 0" euler="0 0 0"/>
+          <geom class="visual" type="mesh" mesh="upper_cover" material="shell" pos="0 -0.005 0" euler="0 0 0"/>
           <geom class="visual" type="mesh" mesh="upper_motor" material="frame" pos="0 0 0" euler="0 0 3.14159265"/>
           <body name="rear_right_lower_leg" pos="0.025 0 -0.3205">
             <joint name="rear_right_knee" axis="0 1 0" range="-2.7929 -0.2548"/>

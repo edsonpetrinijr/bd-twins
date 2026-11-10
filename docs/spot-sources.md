@@ -15,3 +15,6 @@ Numbers only; meshes and code here are ours.
 - Standing pose hip pitch 0.75, knee −1.5 rad → body top 0.599 m (spec default walking height 0.61 m).
 - Visual shell in `spot/cad.py` (build123d), from the BD photos and the "Spot Launch" video: yellow body with sloped ends and dark camera faces front and rear, black hip actuators, yellow thigh covers, slim black shins, rubber feet.
 - Standing test (joint PD only, kp 300–500, implicitfast): 10 s, tilt < 2 deg, body settles 1–2 cm, only the four feet touch the ground.
+
+## v1 visual pass (09/nov)
+Compared with frames of BD's "Spot Launch" video (3/4 and side). Changed: body from a box to a side profile with flat top and sloped camera ends; dark camera faces tilted with the slope; black lower half of the body, side groove line, black hip recesses at the four corners, payload rails on top, side camera slots; thighs deeper (0.15 m front-back) and thicker with rounded tops; shins taper from the knee linkage to a slim rod. No logos or lettering reproduced.
