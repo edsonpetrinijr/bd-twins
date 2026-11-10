@@ -224,7 +224,7 @@ def hip_roll():
 
 
 if __name__ == "__main__":
-    save(paddle(length=0.336, r_top=0.088, r_bot=0.074, thick=0.054, edge=0.016), "shin_paddle")
+    save(paddle(length=0.336, r_top=0.08, r_bot=0.068, thick=0.056, edge=0.016), "shin_paddle")
     save(drum(r=0.066, width=0.07, hub_r=0.032, hub_depth=0.013, edge=0.009), "knee_drum")
     save(drum(r=0.056, width=0.06, hub_r=0.028, hub_depth=0.012, edge=0.008), "ankle_drum")
     save(drum(r=0.074, width=0.1, hub_r=0.034, hub_depth=0.013, edge=0.01), "hip_drum")

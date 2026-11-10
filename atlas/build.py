@@ -91,14 +91,14 @@ def leg(s, side):
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {cad("knee_drum", s, "shell", f"0 {s*0.04} 0")}
-            {cad("shin_paddle", 1, "frame", f"0.06 {-s*0.025} 0")}
+            {cad("knee_drum", s, "shell", f"0 {s*0.018} 0")}
+            {cad("shin_paddle", 1, "frame", f"0.025 {-s*0.03} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {cad("ankle_drum", s, "shell", f"0 {s*0.034} 0")}
+              {cad("ankle_drum", s, "shell", f"0 {s*0.012} 0")}
               {cad("foot", 1, "frame", "0 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
             </body>

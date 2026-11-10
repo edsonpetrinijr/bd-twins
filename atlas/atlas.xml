@@ -72,18 +72,18 @@
           <geom class="visual" pos="0.04 0 0" type="mesh" density="1577.73" material="shell" mesh="thigh_front"/>
           <geom class="visual" pos="-0.03 0 -0.355" type="mesh" density="1577.73" material="rib" mesh="thigh_motor"/>
           <body name="left_shin" pos="0 0 -0.467">
-            <inertial pos="0.0482644 -0.0122849 -0.123863" quat="0.799945 -0.064452 -0.00963379 0.596524" mass="4" diaginertia="0.0838449 0.0769222 0.0120528"/>
+            <inertial pos="0.0197884 -0.0199921 -0.123136" quat="0.754362 -0.0405332 0.00838599 0.655153" mass="4" diaginertia="0.0776845 0.0733643 0.00870396"/>
             <joint name="left_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="left_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 0.04 0" quat="1 0 0 0" type="mesh" density="817.808" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.06 -0.025 0" quat="1 0 0 0" type="mesh" density="817.808" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 0.018 0" quat="1 0 0 0" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.025 -0.03 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
             <body name="left_foot" pos="0 0 -0.336">
-              <inertial pos="0.0100547 0.0071117 -0.114451" quat="0.678653 -0.175496 -0.0397411 0.712076" mass="1.5" diaginertia="0.0127369 0.00908939 0.00602733"/>
+              <inertial pos="0.0100547 0.00251079 -0.114451" quat="0.690994 -0.139667 -0.0915443 0.703306" mass="1.5" diaginertia="0.0125248 0.00885777 0.0059688"/>
               <joint name="left_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="left_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="left_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 0.034 0" quat="1 0 0 0" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" pos="0 0.012 0" quat="1 0 0 0" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
               <geom class="visual" type="mesh" density="530.992" material="frame" mesh="foot"/>
               <site name="left_foot" pos="0.04 0 -0.196"/>
             </body>
@@ -103,18 +103,18 @@
           <geom class="visual" pos="0.04 0 0" type="mesh" density="1577.73" material="shell" mesh="thigh_front"/>
           <geom class="visual" pos="-0.03 0 -0.355" type="mesh" density="1577.73" material="rib" mesh="thigh_motor"/>
           <body name="right_shin" pos="0 0 -0.467">
-            <inertial pos="0.0482644 0.0122849 -0.123863" quat="0.596524 -0.00963376 -0.064452 0.799945" mass="4" diaginertia="0.0838449 0.0769222 0.0120528"/>
+            <inertial pos="0.0197884 0.0199921 -0.123136" quat="0.655153 0.00838602 -0.0405332 0.754362" mass="4" diaginertia="0.0776845 0.0733643 0.00870396"/>
             <joint name="right_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="right_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 -0.04 0" quat="1.7949e-09 0 0 1" type="mesh" density="817.808" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.06 0.025 0" quat="1 0 0 0" type="mesh" density="817.808" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 -0.018 0" quat="1.7949e-09 0 0 1" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.025 0.03 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
             <body name="right_foot" pos="0 0 -0.336">
-              <inertial pos="0.0100547 -0.00711273 -0.114451" quat="0.712072 -0.0397404 -0.175498 0.678656" mass="1.5" diaginertia="0.0127369 0.00908937 0.0060273"/>
+              <inertial pos="0.0100547 -0.00251182 -0.114451" quat="0.703303 -0.0915428 -0.139669 0.690997" mass="1.5" diaginertia="0.0125248 0.00885777 0.00596879"/>
               <joint name="right_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="right_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="right_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 -0.034 0" quat="1.7949e-09 0 0 1" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" pos="0 -0.012 0" quat="1.7949e-09 0 0 1" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
               <geom class="visual" type="mesh" density="530.992" material="frame" mesh="foot"/>
               <site name="right_foot" pos="0.04 0 -0.196"/>
             </body>

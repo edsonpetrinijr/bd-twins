@@ -131,3 +131,6 @@ From the leg close-ups (webinar 3/4 render + spec-sheet side render):
 - Thigh: blue full-depth shell on the upper ~60%; lower part = blue strip in front + dark finned motor block behind (vertical fins seen from the side). Narrower laterally (0.10 m), deep front-back (0.14 m).
 - Shin slab bigger front-back (r 0.088/0.074 m) and further forward (0.06 m ahead of the knee-ankle line), thinner laterally (0.054 m).
 IoU 0.82 (legs 0.77, feet 0.75).
+
+## v1.5 (09/nov): legs no longer stick out
+Edson: legs looked "pushed out". Two causes: knee/ankle drums sat 3–4 cm outboard of the thigh (side "ears" from the front), and the shin slab sat 6 cm ahead of the knee-ankle line (shin jutting forward from the side). Drums pulled inboard so their outer face is flush with the thigh; slab moved to 0.025 m ahead and slightly smaller. Legs IoU 0.77 → 0.82, total 0.82.
