@@ -2,8 +2,8 @@
 id: bd-twins
 status: active
 updated: 2026-11-09
-stopped_at: v1.0, corpo quase todo em CAD
-next: Mãos, pés e ombros em CAD
+stopped_at: v1.1, ombro/mão/pé em CAD
+next: Domo do tronco e luz do render
 tasks:
   - Casca visual mais fiel (mesh)
   - Treinar Flat-BD-Atlas na GPU
@@ -29,3 +29,4 @@ Atlas v0.1 do zero: 28 DoF de corpo. Pernas e braços medidos nas fotos do spec 
 - 2026-11-09 · v0.7/v0.8: perna refeita (canela em placa, juntas em tambor) e ombro/tronco/quadril mais estreitos a pedido do Edson.
 - 2026-11-09 · v0.9: primeiras peças em CAD (build123d): canela e tambores de joelho/tornozelo. `atlas/cad.py` gera os STL.
 - 2026-11-09 · v0.10/v1.0: coxa, braço, antebraço, cotovelo, tronco (barriga, domo, cintura), tambores frisados da pelve e cabeça (casca, anel, face rebaixada) viraram CAD.
+- 2026-11-09 · v1.1: ombro (tambor com cubo), mão de 3 dedos + polegar (esquerda/direita), pé com calcanhar e ponta em CAD; face escura fosca.

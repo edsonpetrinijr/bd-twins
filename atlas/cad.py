@@ -8,7 +8,7 @@ Frames match the body each part attaches to (x forward, y left, z up, joint at t
 from pathlib import Path
 
 from build123d import (
-    Axis, BuildPart, BuildSketch, Circle, Cylinder, Locations, Mode, Plane, RectangleRounded,
+    Axis, Box, BuildPart, BuildSketch, Circle, Cylinder, Locations, Mode, Plane, RectangleRounded, Rot,
     export_stl, extrude, fillet, loft, make_hull,
 )
 
@@ -109,6 +109,59 @@ def head():
     return shell.part, ring.part, face.part
 
 
+def rbox(dx, dy, dz, r, at=(0, 0, 0), rot=(0, 0, 0)):
+    """Box with all edges rounded, centered at `at`."""
+    with BuildPart() as p:
+        Box(dx, dy, dz)
+        fillet(p.edges(), r)
+    return p.part.rotate(Axis.X, rot[0]).rotate(Axis.Y, rot[1]).rotate(Axis.Z, rot[2]).translate(at)
+
+
+def shoulder():
+    """Shoulder actuator: fat drum along x with a soft rim and a recessed front hub."""
+    with BuildPart() as p:
+        Cylinder(0.074, 0.1, rotation=(0, 90, 0))
+        fillet(p.edges(), 0.03)
+        with Locations((0.05 - 0.005, 0, 0)):
+            Cylinder(0.034, 0.012, rotation=(0, 90, 0), mode=Mode.SUBTRACT)
+    return p.part
+
+
+def hand(side):
+    """Left hand (side=+1) or right (-1): palm, back plate on the outer side, 3 curled fingers, thumb at the front."""
+    s = side
+    frame = rbox(0.084, 0.044, 0.1, 0.012, at=(0, 0, -0.05))
+    for x in (-0.026, 0.0, 0.026):
+        z, ang = -0.1, 0.0
+        for length in (0.03, 0.024, 0.02):
+            ang += 0.18  # slight curl toward the palm
+            dz, dy = -length * 0.98, -s * length * 0.18
+            seg = rbox(0.02, 0.019, length + 0.006, 0.006, at=(x, -s * 0.004 + dy * (ang / 0.18) * 0.5, z + dz / 2),
+                       rot=(s * ang * 57.3, 0, 0))
+            frame = frame + seg
+            z += dz
+    thumb1 = rbox(0.022, 0.02, 0.04, 0.007, at=(0.05, -s * 0.012, -0.045), rot=(0, -35, 0))
+    thumb2 = rbox(0.019, 0.018, 0.032, 0.006, at=(0.068, -s * 0.016, -0.078), rot=(0, -10, 0))
+    frame = frame + thumb1 + thumb2
+    plate = rbox(0.088, 0.012, 0.085, 0.005, at=(0, s * 0.027, -0.055))
+    return frame, plate
+
+
+def foot():
+    """Foot: tapered ankle block, sole plate with heel and toe pads."""
+    with BuildPart() as blk:
+        with BuildSketch(Plane.XY.offset(-0.03)):
+            RectangleRounded(0.08, 0.07, 0.015)
+        with BuildSketch(Plane.XY.offset(-0.15)):
+            RectangleRounded(0.11, 0.09, 0.02)
+        loft()
+        fillet(blk.edges().group_by(Axis.Z)[-1], 0.012)
+    top = rbox(0.27, 0.11, 0.04, 0.012, at=(0.03, 0, -0.155))
+    heel = rbox(0.09, 0.124, 0.03, 0.008, at=(-0.085, 0, -0.181))
+    toe = rbox(0.13, 0.124, 0.03, 0.008, at=(0.125, 0, -0.181))
+    return blk.part + top + heel + toe
+
+
 if __name__ == "__main__":
     save(paddle(length=0.336, r_top=0.066, r_bot=0.058, thick=0.05, edge=0.014), "shin_paddle")
     save(drum(r=0.062, width=0.07, hub_r=0.03, hub_depth=0.012, edge=0.008), "knee_drum")
@@ -130,3 +183,9 @@ if __name__ == "__main__":
     save(hs, "head_shell")
     save(hr, "head_ring")
     save(hf, "head_face")
+    save(shoulder(), "shoulder")
+    for side, tag in ((1, "l"), (-1, "r")):
+        hf, hp = hand(side)
+        save(hf, f"hand_frame_{tag}")
+        save(hp, f"hand_plate_{tag}")
+    save(foot(), "foot")

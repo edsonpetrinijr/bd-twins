@@ -98,8 +98,7 @@ def leg(s, side):
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
               {cad("ankle_drum", s, "shell", f"0 {s*0.03} 0")}
-              {shell("ankle_block", -0.15, -0.03, (0.04, 0.035), (0.055, 0.045), 0.02, "frame")}
-              {shell("sole", -0.196, -0.145, (0.15, 0.058), (0.165, 0.062), 0.02, "frame", "0.035 0 0")}
+              {cad("foot", 1, "frame", "0 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
             </body>
           </body>
@@ -110,17 +109,13 @@ def leg(s, side):
 def arm(s, side):
     o = s * ARM_OUT
     roll = "-0.3 3.0" if s > 0 else "-3.0 0.3"
-    fingers = "\n".join(
-        g("capsule", material="frame", fromto=f"{x} {o} -0.10 {x} {o + s*0.004} -0.155", size="0.011")
-        for x in (-0.024, 0.0, 0.024)
-    )
     return f"""
         <body name="{side}_upper_arm" pos="0 {s*SHOULDER_Y} {SHOULDER_DZ}">
           <joint name="{side}_shoulder_pitch_joint" axis="0 1 0" range="-3.1 3.1"/>
           <joint name="{side}_shoulder_roll_joint" axis="1 0 0" range="{roll}"/>
           <joint name="{side}_shoulder_yaw_joint" axis="0 0 1" range="-2.6 2.6"/>
           {g("capsule", "collision", name=f"{side}_upper_arm_collision", fromto=f"0 {o} -0.05 0 {o} -{UPPER_ARM}", size="0.05")}
-          {g("capsule", material="frame", fromto="-0.045 0 0 0.045 0 0", size="0.074")}
+          {cad("shoulder", 1, "frame", "0 0 0")}
           {cad("upper_arm_shell", 1, "shell", f"0 {o} 0")}
           {cad("elbow_ribs", 1, "rib", f"0 {o} -0.25")}
           <body name="{side}_forearm" pos="0 {o} -{UPPER_ARM}">
@@ -135,10 +130,8 @@ def arm(s, side):
               <joint name="{side}_wrist_pitch_joint" axis="0 1 0" range="-1.2 1.2"/>
               <joint name="{side}_wrist_roll_joint" axis="1 0 0" range="-1.2 1.2"/>
               {g("box", "collision", name=f"{side}_hand_collision", pos="0 0 -0.08", size="0.04 0.025 0.08")}
-              {shell("palm", -0.1, 0.0, (0.042, 0.024), (0.046, 0.022), 0.012, "frame")}
-              {g("box", material="shell", pos=f"0 {s*0.026} -0.055", size="0.044 0.006 0.042")}
-              {fingers.replace(f" {o} ", " 0 ").replace(f" {o + s*0.004} ", f" {s*0.004} ")}
-              {g("capsule", material="frame", fromto=f"0.04 {-s*0.01} -0.04 0.07 {-s*0.03} -0.09", size="0.012")}
+              {cad("hand_frame_" + side[0], 1, "frame", "0 0 0")}
+              {cad("hand_plate_" + side[0], 1, "shell", "0 0 0")}
               <site name="{side}_palm" pos="0 0 -0.08"/>
             </body>
           </body>
@@ -160,7 +153,7 @@ XML = f"""<!--
     <material name="frame" rgba="0.16 0.16 0.18 1" specular="0.3" shininess="0.4"/>
     <material name="rib" rgba="0.1 0.1 0.11 1" specular="0.1"/>
     <material name="sole" rgba="0.08 0.08 0.08 1"/>
-    <material name="face" rgba="0.03 0.03 0.04 1" specular="0.9" shininess="0.9"/>
+    <material name="face" rgba="0.02 0.02 0.025 1" specular="0.15" shininess="0.3"/>
     <material name="ring" rgba="1 0.92 0.72 1" emission="1"/>
 @@MESHES@@
 @@CAD@@
