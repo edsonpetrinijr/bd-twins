@@ -141,3 +141,10 @@ Edson: leg center not aligned, joints looked wrong. Internal check instead of ph
 - Hip pitch: the lower pelvis drum (axis y) now sits on the pitch axis and spans to the thighs, so each thigh hangs from its end.
 - Hip roll: the x-axis drum is centered on the roll axis (0.08 m above pitch), i.e. beside the upper pelvis.
 - Lower leg centered under the thigh: shin slab inboard, knee/ankle drums outboard, the pair centered on the leg line. Visual centers per segment (lateral): hip 0.120, thigh 0.120, shin 0.127, foot 0.120 m.
+
+## v1.7 (09/nov)
+Edson: v1.6 hip looked worse, neck too wide, legs still a bit out, black shin slab on the wrong side.
+- Hip: yaw/roll/pitch now meet at one point (HIP_ROLL_DZ = 0). The roll drum sits on the thigh top again (v1.5 look) and is still on its axis; the pitch drum between the two roll drums is shorter. `joints_check.py` still passes.
+- Hips 0.105 m apart (was 0.12).
+- Shin slab on the outside, knee/ankle drums on the inside (hub facing in).
+- Neck block narrower (0.07 x 0.09 m).

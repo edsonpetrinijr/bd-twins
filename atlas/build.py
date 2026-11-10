@@ -9,13 +9,13 @@ from pathlib import Path
 
 # Heights are world z with the robot standing straight. Sources in docs/atlas-sources.md.
 HIP_PITCH_Z = 0.999        # pelvis origin = hip pitch axis
-HIP_ROLL_DZ = 0.08         # hip yaw/roll point sits above the pitch axis (front-facing discs on the pelvis)
+HIP_ROLL_DZ = 0.0          # hip yaw/roll/pitch meet at one point: the roll drum sits on the thigh top
 THIGH, SHIN, ANKLE = 0.467, 0.336, 0.196
 WAIST_DZ = 0.06            # waist yaw above pelvis origin
 SHOULDER_DZ = 0.514        # shoulder axis above waist -> 1.573 m (front close-up, product video)
 SHOULDER_Y = 0.205         # shoulder actuator center, lateral (v0.8: 0.23 looked too wide; all torso widths scaled ~0.85)
 ARM_OUT = 0.0              # arm hangs straight below the shoulder actuator
-HIP_Y = 0.12               # hip spacing (keeps the hanging forearm clear of the thigh)
+HIP_Y = 0.105               # hip spacing (keeps the hanging forearm clear of the thigh)
 UPPER_ARM, FOREARM = 0.31, 0.28
 
 MESHES = {}
@@ -91,14 +91,14 @@ def leg(s, side):
           <body name="{side}_shin" pos="0 0 -{THIGH}">
             <joint name="{side}_knee_joint" axis="0 1 0" range="0 2.6"/>
             {g("capsule", "collision", name=f"{side}_shin_collision", fromto=f"0.03 0 0 0.03 0 -{SHIN}", size="0.055")}
-            {cad("knee_drum", s, "shell", f"0 {s*0.035} 0")}
-            {cad("shin_paddle", 1, "frame", f"0.025 {-s*0.028} 0")}
+            {cad("knee_drum", -s, "shell", f"0 {-s*0.035} 0")}
+            {cad("shin_paddle", 1, "frame", f"0.025 {s*0.028} 0")}
             <body name="{side}_foot" pos="0 0 -{SHIN}">
               <joint name="{side}_ankle_pitch_joint" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="{side}_ankle_roll_joint" axis="1 0 0" range="-0.4 0.4"/>
               {g("capsule", "collision", name=f"{side}_ankle_collision", fromto="0 0 0 0 0 -0.116", size="0.045")}
               {g("box", "collision", name=f"{side}_foot_collision", pos="0.04 0 -0.156", size="0.16 0.06 0.04")}
-              {cad("ankle_drum", s, "shell", f"0 {s*0.03} 0")}
+              {cad("ankle_drum", -s, "shell", f"0 {-s*0.03} 0")}
               {cad("foot", 1, "frame", "0 0 0")}
               <site name="{side}_foot" pos="0.04 0 -{ANKLE}"/>
             </body>
@@ -198,7 +198,7 @@ XML = f"""<!--
         <body name="head" pos="0 0 0.52">
           <joint name="neck_yaw_joint" axis="0 0 1"/>
           {g("sphere", "collision", name="head_collision", pos="0.03 0 0.221", size="0.1")}
-          {g("box", material="frame", pos="0 0 0.09", size="0.055 0.07 0.04")}
+          {g("box", material="frame", pos="0 0 0.09", size="0.035 0.045 0.04")}
           {cad("head_shell", 1, "shell", "0.03 0 0.221")}
           {cad("head_ring", 1, "ring", "0.03 0 0.221")}
           {cad("head_face", 1, "face", "0.03 0 0.221")}

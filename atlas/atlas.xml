@@ -53,18 +53,18 @@
 
   <worldbody>
     <body name="pelvis" pos="0 0 0.999">
-      <inertial pos="0 0 0.0536498" mass="8" diaginertia="0.0617814 0.0457387 0.029012"/>
+      <inertial pos="-7.23447e-09 0 0.0713988" mass="8" diaginertia="0.0545216 0.0456675 0.0210491"/>
       <joint name="floating_base_joint" type="free" armature="0" damping="0"/>
       <geom name="pelvis_collision" class="collision" size="0.08 0.14 0.06" pos="0 0 0.05" type="box"/>
-      <geom class="visual" type="mesh" density="1770.17" material="frame" mesh="pelvis_drum_low"/>
-      <geom class="visual" pos="0 0 0.13" quat="1 0 0 0" type="mesh" density="1770.17" material="frame" mesh="pelvis_drum_high"/>
+      <geom class="visual" type="mesh" density="2355.8" material="frame" mesh="pelvis_drum_low"/>
+      <geom class="visual" pos="0 0 0.13" quat="1 0 0 0" type="mesh" density="2355.8" material="frame" mesh="pelvis_drum_high"/>
       <site name="imu_in_pelvis" pos="0 0 0.05"/>
-      <body name="left_hip" pos="0 0.12 0.08">
+      <body name="left_hip" pos="0 0.105 0">
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <joint name="left_hip_yaw_joint" pos="0 0 0" axis="0 0 1"/>
         <joint name="left_hip_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.5 0.5"/>
         <geom class="visual" type="mesh" material="rib" mesh="hip_roll"/>
-        <body name="left_thigh" pos="0 0 -0.08">
+        <body name="left_thigh">
           <inertial pos="-0.000361433 7.56932e-08 -0.254545" quat="0.706831 0.0194129 0.0194124 0.706849" mass="8.5" diaginertia="0.113286 0.10656 0.0167932"/>
           <joint name="left_hip_pitch_joint" pos="0 0 0" axis="0 1 0" range="-2.2 0.6"/>
           <geom name="left_thigh_collision" class="collision" size="0.045 0.2335" pos="0 0 -0.2335" type="capsule"/>
@@ -72,30 +72,30 @@
           <geom class="visual" pos="0.04 0 0" type="mesh" density="1577.73" material="shell" mesh="thigh_front"/>
           <geom class="visual" pos="-0.03 0 -0.355" type="mesh" density="1577.73" material="rib" mesh="thigh_motor"/>
           <body name="left_shin" pos="0 0 -0.467">
-            <inertial pos="0.0197884 -0.0148651 -0.123136" quat="0.779616 -0.0501775 0.0139588 0.624088" mass="4" diaginertia="0.0780409 0.0743737 0.00953638"/>
+            <inertial pos="0.0197884 0.0148651 -0.123136" quat="0.624089 0.0139589 -0.0501775 0.779616" mass="4" diaginertia="0.0780409 0.0743737 0.00953638"/>
             <joint name="left_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="left_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 0.035 0" quat="1 0 0 0" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.025 -0.028 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 -0.035 0" quat="1.7949e-09 0 0 1" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.025 0.028 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
             <body name="left_foot" pos="0 0 -0.336">
-              <inertial pos="0.0100547 0.00627517 -0.114451" quat="0.680928 -0.169523 -0.0496091 0.71073" mass="1.5" diaginertia="0.012683 0.0090306 0.00601298"/>
+              <inertial pos="0.0100547 -0.0062762 -0.114451" quat="0.710727 -0.0496082 -0.169525 0.680931" mass="1.5" diaginertia="0.012683 0.00903059 0.00601295"/>
               <joint name="left_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="left_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="left_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 0.03 0" quat="1 0 0 0" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" pos="0 -0.03 0" quat="1.7949e-09 0 0 1" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
               <geom class="visual" type="mesh" density="530.992" material="frame" mesh="foot"/>
               <site name="left_foot" pos="0.04 0 -0.196"/>
             </body>
           </body>
         </body>
       </body>
-      <body name="right_hip" pos="0 -0.12 0.08">
+      <body name="right_hip" pos="0 -0.105 0">
         <inertial pos="0 0 0" mass="0.6" diaginertia="0.002 0.002 0.002"/>
         <joint name="right_hip_yaw_joint" pos="0 0 0" axis="0 0 1"/>
         <joint name="right_hip_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.5 0.5"/>
         <geom class="visual" type="mesh" material="rib" mesh="hip_roll"/>
-        <body name="right_thigh" pos="0 0 -0.08">
+        <body name="right_thigh">
           <inertial pos="-0.000361433 7.56932e-08 -0.254545" quat="0.706831 0.0194129 0.0194124 0.706849" mass="8.5" diaginertia="0.113286 0.10656 0.0167932"/>
           <joint name="right_hip_pitch_joint" pos="0 0 0" axis="0 1 0" range="-2.2 0.6"/>
           <geom name="right_thigh_collision" class="collision" size="0.045 0.2335" pos="0 0 -0.2335" type="capsule"/>
@@ -103,18 +103,18 @@
           <geom class="visual" pos="0.04 0 0" type="mesh" density="1577.73" material="shell" mesh="thigh_front"/>
           <geom class="visual" pos="-0.03 0 -0.355" type="mesh" density="1577.73" material="rib" mesh="thigh_motor"/>
           <body name="right_shin" pos="0 0 -0.467">
-            <inertial pos="0.0197884 0.0148651 -0.123136" quat="0.624089 0.0139589 -0.0501775 0.779616" mass="4" diaginertia="0.0780409 0.0743737 0.00953638"/>
+            <inertial pos="0.0197884 -0.0148651 -0.123136" quat="0.779616 -0.0501775 0.0139588 0.624088" mass="4" diaginertia="0.0780409 0.0743737 0.00953638"/>
             <joint name="right_knee_joint" pos="0 0 0" axis="0 1 0" range="0 2.6"/>
             <geom name="right_shin_collision" class="collision" size="0.055 0.168" pos="0.03 0 -0.168" type="capsule"/>
-            <geom class="visual" pos="0 -0.035 0" quat="1.7949e-09 0 0 1" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
-            <geom class="visual" pos="0.025 0.028 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
+            <geom class="visual" pos="0 0.035 0" quat="1 0 0 0" type="mesh" density="871.62" material="shell" mesh="knee_drum"/>
+            <geom class="visual" pos="0.025 -0.028 0" quat="1 0 0 0" type="mesh" density="871.62" material="frame" mesh="shin_paddle"/>
             <body name="right_foot" pos="0 0 -0.336">
-              <inertial pos="0.0100547 -0.0062762 -0.114451" quat="0.710727 -0.0496082 -0.169525 0.680931" mass="1.5" diaginertia="0.012683 0.00903059 0.00601295"/>
+              <inertial pos="0.0100547 0.00627517 -0.114451" quat="0.680928 -0.169523 -0.0496091 0.71073" mass="1.5" diaginertia="0.012683 0.0090306 0.00601298"/>
               <joint name="right_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.8 0.8"/>
               <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.4 0.4"/>
               <geom name="right_ankle_collision" class="collision" size="0.045 0.058" pos="0 0 -0.058" type="capsule"/>
               <geom name="right_foot_collision" class="collision" size="0.16 0.06 0.04" pos="0.04 0 -0.156" type="box"/>
-              <geom class="visual" pos="0 -0.03 0" quat="1.7949e-09 0 0 1" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
+              <geom class="visual" pos="0 0.03 0" quat="1 0 0 0" type="mesh" density="530.992" material="shell" mesh="ankle_drum"/>
               <geom class="visual" type="mesh" density="530.992" material="frame" mesh="foot"/>
               <site name="right_foot" pos="0.04 0 -0.196"/>
             </body>
@@ -135,15 +135,15 @@
         <geom class="visual" type="mesh" density="629.012" material="frame" mesh="handle"/>
         <site name="imu_in_torso" pos="0 0 0.33"/>
         <body name="head" pos="0 0 0.52">
-          <inertial pos="0.0421003 -4.20074e-08 0.205328" quat="0.637964 0.304961 0.304959 0.637967" mass="4" diaginertia="0.0347372 0.0293244 0.0241293"/>
+          <inertial pos="0.045524 -4.54236e-08 0.214707" quat="0.54706 0.448022 0.448021 0.547064" mass="4" diaginertia="0.0316236 0.0278686 0.0224994"/>
           <joint name="neck_yaw_joint" pos="0 0 0" axis="0 0 1"/>
           <geom name="head_collision" class="collision" size="0.1" pos="0.03 0 0.221"/>
-          <geom class="visual" size="0.055 0.07 0.04" pos="0 0 0.09" type="box" density="413.226" material="frame"/>
-          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="413.226" material="shell" mesh="head_shell"/>
-          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="413.226" material="ring" mesh="head_ring"/>
-          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="413.226" material="face" mesh="head_face"/>
-          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="413.226" material="camera" mesh="head_camera"/>
-          <geom class="visual" size="0.008 0.025" pos="-0.06 0 0.33" type="cylinder" density="413.226" material="ring"/>
+          <geom class="visual" size="0.035 0.045 0.04" pos="0 0 0.09" type="box" density="446.831" material="frame"/>
+          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="446.831" material="shell" mesh="head_shell"/>
+          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="446.831" material="ring" mesh="head_ring"/>
+          <geom class="visual" pos="0.03 0 0.221" type="mesh" density="446.831" material="face" mesh="head_face"/>
+          <geom class="visual" pos="0.03 0 0.221" quat="1 0 0 0" type="mesh" density="446.831" material="camera" mesh="head_camera"/>
+          <geom class="visual" size="0.008 0.025" pos="-0.06 0 0.33" type="cylinder" density="446.831" material="ring"/>
         </body>
         <body name="left_upper_arm" pos="0 0.205 0.514">
           <inertial pos="2.65705e-06 -3.45004e-08 -0.115313" quat="1 -1.1216e-09 1.87941e-05 -5.9678e-05" mass="3.2" diaginertia="0.0343176 0.03394 0.00667851"/>

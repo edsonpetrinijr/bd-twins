@@ -2,7 +2,7 @@
 id: bd-twins
 status: active
 updated: 2026-11-09
-stopped_at: v1.6, juntas nos atuadores
+stopped_at: v1.7, quadril/pescoço/canela
 next: Treinar Flat-BD-Atlas na GPU
 tasks:
   - Casca visual mais fiel (mesh)
@@ -35,3 +35,4 @@ Atlas v0.1 do zero: 28 DoF de corpo. Pernas e braços medidos nas fotos do spec 
 - 2026-11-09 · v1.4: cabeça com grade de ventilação, anel grosso e módulo de câmera; pé mais baixo e curto.
 - 2026-11-09 · v1.5: tambores de joelho/tornozelo rentes à coxa e canela alinhada sob a coxa (perna parecia "pra fora").
 - 2026-11-09 · v1.6: `joints_check.py` — toda junta visível no eixo do seu tambor (antes: quadril 70 mm fora). Perna centrada.
+- 2026-11-09 · v1.7: quadril volta ao visual da v1.5 com eixos coincidentes; pescoço estreito; canela escura por fora; quadris 0,105 m.

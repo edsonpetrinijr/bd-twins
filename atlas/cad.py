@@ -239,7 +239,7 @@ if __name__ == "__main__":
     save(tube(0.41, 0.18, (0.28, 0.296), (0.26, 0.272), 0.045, 0.012), "belly")
     save(yoke(), "yoke")
     save(tube(0.19, 0.06, (0.18, 0.22), (0.17, 0.2), 0.03, 0.01), "waist")
-    save(ribbed(0.06, 0.2, 8, 0.006, axis_y=True), "pelvis_drum_low")  # hip pitch actuators; thighs hang from its ends
+    save(ribbed(0.058, 0.13, 6, 0.006, axis_y=True), "pelvis_drum_low")  # hip pitch axis, between the two hip roll drums
     save(ribbed(0.055, 0.17, 7, 0.006, axis_y=True), "pelvis_drum_high")
     hs, hr, hf, hc = head()
     save(hs, "head_shell")
