@@ -102,6 +102,12 @@ class AtlasIK:
             if self.m.jnt_limited[j]:
                 a = self.m.jnt_qposadr[j]
                 self.lo[a], self.hi[a] = self.m.jnt_range[j]
+        # Human-like limits for the IK only: Atlas' hip yaw and waist are unlimited, and the IK otherwise
+        # uses them to twist the legs/torso (85 deg hip yaw seen on 69_70) instead of moving naturally.
+        for name, lim in (("left_hip_yaw_joint", 0.6), ("right_hip_yaw_joint", 0.6), ("waist_yaw_joint", 1.0),
+                          ("neck_yaw_joint", 1.0)):
+            a = self.m.joint(name).qposadr[0]
+            self.lo[a], self.hi[a] = -lim, lim
         self.d.qpos[2] = 0.975
         self.d.qpos[3] = 1
         mujoco.mj_forward(self.m, self.d)
@@ -119,6 +125,8 @@ class AtlasIK:
             for b, lp, wp, wr, w in targets:
                 bid = self.body(b)
                 xr = d.xmat[bid].reshape(3, 3)
+                if callable(wp):  # target defined relative to the current Atlas pose (e.g. its shoulder)
+                    wp = wp(d)
                 if wp is not None:
                     pt = d.xpos[bid] + xr @ lp
                     jp = np.zeros((3, m.nv))
@@ -134,6 +142,11 @@ class AtlasIK:
                     mujoco.mju_subQuat(er, qt, q)  # body-frame error
                     J.append(w * jr)
                     e.append(w * (xr @ er))
+            # weak pull toward the standing pose: keeps redundant joints (arm yaw, hip yaw) quiet
+            reg = np.zeros((m.nv - 6, m.nv))
+            reg[:, 6:] = np.eye(m.nv - 6)
+            J.append(0.05 * reg)
+            e.append(0.05 * (0 - d.qpos[7:]))
             J, e = np.vstack(J), np.concatenate(e)
             dq = J.T @ np.linalg.solve(J @ J.T + damping * np.eye(len(e)), e)
             mujoco.mj_integratePos(m, d.qpos, dq, 1.0)
@@ -184,6 +197,7 @@ def main():
     ap.add_argument("--end", type=int)
     ap.add_argument("--out", required=True)
     ap.add_argument("--video")
+    ap.add_argument("--azimuth", type=float, default=90.0, help="video camera azimuth (90 = side view)")
     ap.add_argument("--npz", help="also write the mjlab tracking motion file (50 fps, no W&B needed)")
     args = ap.parse_args()
 
@@ -205,11 +219,20 @@ def main():
     # ground: the lower ankle should sit at Atlas' ankle height (0.196 m) when a foot is planted
     ank = np.minimum(P[:, idx["LeftFoot"], 2], P[:, idx["RightFoot"], 2])
     P[:, :, 2] += 0.196 - np.percentile(ank, 5)
-    # Atlas hips are wider than the human pelvis offset; IK handles it (feet weights > hip placement)
 
     # T-pose rest rotations, so "rotation relative to rest" is what we transfer to Atlas bodies
     _, R0 = bvh_fk(joints, data[0])
     R0 = np.array([B2M @ r @ B2M.T for r in R0])
+
+    # Proportions. Legs keep absolute foot placement (ground contact) but shifted out to Atlas' wider hips;
+    # arms are re-rooted at Atlas' shoulders and scaled to its longer arms, so hand paths keep their shape.
+    T0 = (B2M @ p0.T).T * s
+    half_hip = np.linalg.norm(T0[idx["LeftUpLeg"]] - T0[idx["RightUpLeg"]]) / 2
+    widen = 0.105 - half_hip
+    arm_h = np.linalg.norm(T0[idx["LeftForeArm"]] - T0[idx["LeftArm"]])
+    fore_h = np.linalg.norm(T0[idx["LeftHand"]] - T0[idx["LeftForeArm"]])
+    up_k, fore_k = 0.31 / arm_h, 0.28 / fore_h
+    print(f"hip widen {widen:+.3f} m, arm scale {up_k:.2f} / {fore_k:.2f}")
 
     rows, qs = [], []
     for k in range(len(frames)):
@@ -217,19 +240,46 @@ def main():
         hip_R = R[idx["Hips"]] @ R0[idx["Hips"]].T
         torso_R = R[idx["Spine1"]] @ R0[idx["Spine1"]].T
         T = []
-        T.append(("pelvis", np.zeros(3), p[idx["Hips"]] + hip_R @ np.array([0, 0, 0.0]), hip_R, 3.0))
-        T.append(("torso", np.zeros(3), None, torso_R, 1.0))
-        for side, S in (("left", "Left"), ("right", "Right")):
-            foot_dir = p[idx[f"{S}ToeBase"]] - p[idx[f"{S}Foot"]]
-            T.append((f"{side}_foot", np.zeros(3), p[idx[f"{S}Foot"]], yaw_mat(foot_dir), 5.0))
-            T.append((f"{side}_shin", np.zeros(3), p[idx[f"{S}Leg"]], None, 1.0))
-            T.append((f"{side}_hand", np.zeros(3), p[idx[f"{S}Hand"]], None, 1.0))
-            T.append((f"{side}_forearm", np.zeros(3), p[idx[f"{S}ForeArm"]], None, 0.5))
-        T.append(("head", np.zeros(3), p[idx["Head"]], None, 0.3))
+        # Atlas has only a waist yaw, so the human spine bend has to come from the hips: the torso
+        # orientation leads, the pelvis follows loosely.
+        # Atlas' pelvis origin is on the hip pitch axis = midpoint of the human hip joints (the BVH root
+        # sits ~5 cm higher; using it kept the legs straining straight with the pelvis too high)
+        hip_mid = (p[idx["LeftUpLeg"]] + p[idx["RightUpLeg"]]) / 2
+        T.append(("pelvis", np.zeros(3), hip_mid, hip_R, 0.7))
+        T.append(("pelvis", np.zeros(3), hip_mid, None, 2.0))
+        T.append(("torso", np.zeros(3), None, torso_R, 2.0))
+        lat = hip_R[:, 1]  # pelvis left axis
+        for side, S, sg in (("left", "Left", 1.0), ("right", "Right", -1.0)):
+            out_ = sg * widen * lat
+            foot_R = R[idx[f"{S}Foot"]] @ R0[idx[f"{S}Foot"]].T
+            T.append((f"{side}_foot", np.zeros(3), p[idx[f"{S}Foot"]] + out_, None, 6.0))
+            T.append((f"{side}_foot", np.zeros(3), None, foot_R, 1.0))
+            # knee: same thigh direction as the human, Atlas thigh length (its knee sits lower: tall ankle)
+            th = p[idx[f"{S}Leg"]] - p[idx[f"{S}UpLeg"]]
+            th = th / np.linalg.norm(th)
+            T.append((f"{side}_shin", np.zeros(3),
+                      lambda d, th=th, b=f"{side}_thigh": d.xpos[ik.body(b)] + th * 0.467, None, 1.0))
+            sh, el, wr = (p[idx[f"{S}{n}"]] for n in ("Arm", "ForeArm", "Hand"))
+            up_b = f"{side}_upper_arm"
+            T.append((f"{side}_forearm", np.zeros(3),
+                      lambda d, sh=sh, el=el, b=up_b: d.xpos[ik.body(b)] + (el - sh) * up_k, None, 1.0))
+            T.append((f"{side}_hand", np.zeros(3),
+                      lambda d, sh=sh, el=el, wr=wr, b=up_b: d.xpos[ik.body(b)] + (el - sh) * up_k
+                      + (wr - el) * fore_k, None, 1.5))
         q = ik.solve(T, iters=60 if k == 0 else 20)
+
         qs.append(q)
         w, x, y, z = q[3:7]
         rows.append(np.concatenate([q[:3], [x, y, z, w], q[7:]]))
+
+    # temporal smoothing (5-frame centered average): IK picks slightly different solutions frame to frame
+    Q = np.array(qs)
+    K = 2
+    pad = np.concatenate([Q[:1].repeat(K, 0), Q, Q[-1:].repeat(K, 0)])
+    Q = np.mean([pad[i:i + len(Q)] for i in range(2 * K + 1)], axis=0)
+    Q[:, 3:7] /= np.linalg.norm(Q[:, 3:7], axis=1, keepdims=True)
+    qs = list(Q)
+    rows = [np.concatenate([q[:3], [q[4], q[5], q[6], q[3]], q[7:]]) for q in qs]
 
     out = Path(args.out)
     np.savetxt(out, np.array(rows), delimiter=",", fmt="%.6f")
@@ -257,15 +307,25 @@ def main():
         dv = mujoco.MjData(mv)
         r = mujoco.Renderer(mv, 480, 640)
         cam = mujoco.MjvCamera()
-        cam.distance, cam.elevation, cam.azimuth = 4.0, -12, 120
+        cam.distance, cam.elevation, cam.azimuth = 4.2, -8, args.azimuth
         ff = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s",
                                "640x480", "-r", str(FPS_OUT), "-i", "-", "-pix_fmt", "yuv420p", args.video],
                               stdin=subprocess.PIPE)
-        for q in qs:
+        bones = [(k, j["parent"]) for k, j in enumerate(joints)
+                 if j["parent"] >= 0 and not any(x in j["name"] for x in ("Finger", "Thumb", "Index", "_end"))]
+        for k, q in enumerate(qs):
             dv.qpos[:] = q
             mujoco.mj_forward(mv, dv)
-            cam.lookat[:] = [q[0], q[1], 0.9]
+            cam.lookat[:] = [q[0], q[1], 0.8]
             r.update_scene(dv, cam)
+            az = math.radians(cam.azimuth)
+            shift = 0.9 * np.array([math.sin(az), -math.cos(az), 0.0])  # human drawn beside Atlas
+            for a, b in bones:  # human skeleton (scaled) as green sticks next to Atlas
+                g = r.scene.geoms[r.scene.ngeom]
+                mujoco.mjv_initGeom(g, mujoco.mjtGeom.mjGEOM_CAPSULE, np.zeros(3), np.zeros(3), np.zeros(9),
+                                    np.array([0.2, 0.9, 0.3, 0.8], np.float32))
+                mujoco.mjv_connector(g, mujoco.mjtGeom.mjGEOM_CAPSULE, 0.025, P[k, a] + shift, P[k, b] + shift)
+                r.scene.ngeom += 1
             ff.stdin.write(r.render().tobytes())
         ff.stdin.close()
         ff.wait()
