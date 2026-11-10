@@ -28,6 +28,9 @@ python atlas/train.py play  Mjlab-Velocity-Flat-BD-Atlas
 python atlas/train.py Mjlab-Velocity-Carry-BD-Atlas --env.scene.num-envs 4096
 # native (v2): torso heading held in the world while legs walk any way (incl. carrying "backwards"),
 # waist slows with load, gait rewards fixed; fine-tunes from the carry run
+# mimic: track human mocap retargeted to Atlas (CMU, docs/mocap-sources.md)
+python mocap/retarget.py mocap/raw/69_70.bvh --out mocap/atlas_69_70.csv --npz mocap/atlas_69_70.npz --video pick.mp4
+python atlas/train.py Mjlab-Tracking-Flat-BD-Atlas --env.scene.num-envs 4096
 python atlas/train.py Mjlab-Velocity-Native-BD-Atlas --env.scene.num-envs 4096 --agent.resume True --agent.load-run <carry run> --agent.load-checkpoint model_2999.pt
 ```
 Fleet demo (kinematic robots, real box physics, MuJoCo 4): 2 Stretch unload two trailers, 2 Atlas carry boxes to a conveyor (MuJoCo 4 `surfacevel` belt), 2 Spot patrol. The fleet manager (`fleet/manager.py`: shared grid map, A*, task queue, traffic priority with detours, replanning on a blocked aisle or a dropped box) runs the mission; Atlas turns its torso (continuous waist) to face the pallet and the belt while its legs keep the path heading.
