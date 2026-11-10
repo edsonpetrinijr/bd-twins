@@ -25,4 +25,6 @@ python atlas/demo.py --routine limits --video out.mp4  # 40 s range-of-motion de
 python atlas/train.py train Mjlab-Velocity-Flat-BD-Atlas --env.scene.num-envs 4096
 python atlas/train.py play  Mjlab-Velocity-Flat-BD-Atlas
 ```
+Fleet demo (phase 1, kinematic robots): `python fleet/run.py --video fleet.mp4`. Stretch unloads a trailer, Atlas carries boxes to the line, Spot patrols; the fleet manager (`fleet/manager.py`, shared grid map + A* + task queue) replans when an aisle is blocked or a box is dropped. `python fleet/manager.py` runs its self-check.
+
 Model is generated: edit `atlas/build.py` / `atlas/cad.py`, then `python atlas/cad.py && python atlas/build.py`.
