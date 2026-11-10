@@ -155,3 +155,7 @@ Edson's close-up: the round ends of the shin slab were not concentric with the k
 ## Demo without a policy (09/nov)
 `atlas/demo.py`: 12 s scripted routine (stand, squat, wave, turn waist/head). Joint PD (stiffer than the RL gains) + one balance term: ankles lean the body so the COM stays over the feet. Stays up: max torso tilt 13 deg, pelvis never below 0.82 m.
 What it showed: pure PD fell backward in ~1.5 s (COM 4–7 cm behind the foot center, ankle stiffness below m·g·h); a deep squat (knee 1.2 rad, torso upright) also fell back. Fixed with the ankle balance term, a shallower squat and a forward torso lean. Physics sanity: masses and contacts behave; the policy will need to handle the COM sitting behind the ankle (battery on the back).
+
+## Range-of-motion demo (09/nov)
+`python atlas/demo.py --routine limits [--video out.mp4]`: 40 s, no policy. Waist 360 deg, head 360 deg, arm windmill (shoulder pitch ±3.0 rad, elbows straight, wrists spinning), arms straight up (shoulder roll 2.9 rad), deep squat (knee 1.5 rad), bow at the hips, then the torso spins back while the head holds still. Stays up: pelvis never below 0.76 m.
+Side sway with the hips was cut: with ankle-only balance the robot falls sideways for any amplitude. Lateral balance is a job for the policy.

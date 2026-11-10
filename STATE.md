@@ -38,3 +38,4 @@ Atlas v0.1 do zero: 28 DoF de corpo. Pernas e braços medidos nas fotos do spec 
 - 2026-11-09 · v1.7: quadril volta ao visual da v1.5 com eixos coincidentes; pescoço estreito; canela escura por fora; quadris 0,105 m.
 - 2026-11-09 · v1.8: pontas da canela concêntricas com os tambores do joelho e do tornozelo (checagem automática).
 - 2026-11-09 · `atlas/demo.py`: primeira simulação sem policy (PD + equilíbrio no tornozelo). Fica em pé 12 s, agacha, acena, gira a cintura.
+- 2026-11-09 · `demo.py --routine limits`: tour de 40 s pelos limites (cintura e cabeça 360°, moinho de braço, braços pra cima, agachamento fundo, reverência). Fica em pé.
