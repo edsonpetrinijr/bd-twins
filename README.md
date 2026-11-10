@@ -9,7 +9,7 @@ Mac / Linux:
 ```
 uv venv --python 3.12 && uv pip install -r requirements.txt
 ```
-Windows (no admin), GPU torch first:
+Windows (no admin, no WSL; tested on the GT Makerspace PC 09/nov), GPU torch first:
 ```
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 uv venv --python 3.12
