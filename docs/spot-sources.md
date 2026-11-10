@@ -18,3 +18,11 @@ Numbers only; meshes and code here are ours.
 
 ## v1 visual pass (09/nov)
 Compared with frames of BD's "Spot Launch" video (3/4 and side). Changed: body from a box to a side profile with flat top and sloped camera ends; dark camera faces tilted with the slope; black lower half of the body, side groove line, black hip recesses at the four corners, payload rails on top, side camera slots; thighs deeper (0.15 m front-back) and thicker with rounded tops; shins taper from the knee linkage to a slim rod. No logos or lettering reproduced.
+
+## v2 (09/nov)
+- Front/rear: ends lean back ~15 deg then tuck under; large dark camera panel inside a thick yellow bezel, grille + three camera pods on one side (was a small strip on a 35 deg wedge, looked odd).
+- Hip: black housing outside each body corner; thigh tops tucked under it (thigh no longer a plank next to the body).
+- Standing pose hip 0.85 / knee -1.65 rad: thighs lean like in BD videos, body top 0.555 m (spec range 0.52-0.70).
+- Hook above each foot (the forward bend of the lower leg).
+- Mustard yellow instead of saturated yellow.
+- `spot/check.py`: mass 32.70 kg, 10 s standing under joint PD, tilt 1.3 deg, only the four feet touch.

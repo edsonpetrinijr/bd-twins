@@ -6,7 +6,7 @@
   <compiler angle="radian" autolimits="true" meshdir="meshes"/>
 
   <asset>
-    <material name="shell" rgba="0.95 0.78 0.1 1" specular="0.35" shininess="0.5"/>
+    <material name="shell" rgba="0.88 0.71 0.12 1" specular="0.3" shininess="0.45"/>
     <material name="frame" rgba="0.1 0.1 0.11 1" specular="0.3" shininess="0.4"/>
     <material name="face" rgba="0.04 0.04 0.05 1" specular="0.6" shininess="0.7"/>
     <material name="rubber" rgba="0.05 0.05 0.05 1" specular="0.05"/>
@@ -35,7 +35,7 @@
   </default>
 
   <worldbody>
-    <body name="body" pos="0 0 0.53">
+    <body name="body" pos="0 0 0.50">
       <freejoint name="floating_base_joint"/>
       <geom class="collision" type="box" name="body_collision" size="0.42 0.117 0.075" mass="15.220000000000006"/>
       <geom class="visual" type="mesh" mesh="body_shell" material="shell" pos="0 0 0" euler="0 0 0"/>
@@ -68,7 +68,7 @@
       <body name="front_right_hip" pos="0.29785 -0.055 0">
         <joint name="front_right_hip_x" axis="1 0 0" range="-0.785 0.785"/>
         <geom class="collision" type="capsule" name="front_right_hip_collision" fromto="-0.05 0 0 0.05 0 0" size="0.05" mass="1.68"/>
-        <geom class="visual" type="mesh" mesh="hip_motor" material="frame" pos="0 0 0" euler="0 0 0"/>
+        <geom class="visual" type="mesh" mesh="hip_motor" material="frame" pos="0 0 0" euler="0 0 3.14159265"/>
         <body name="front_right_upper_leg" pos="0 -0.110945 0">
           <joint name="front_right_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="front_right_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>
@@ -108,7 +108,7 @@
       <body name="rear_right_hip" pos="-0.29785 -0.055 0">
         <joint name="rear_right_hip_x" axis="1 0 0" range="-0.785 0.785"/>
         <geom class="collision" type="capsule" name="rear_right_hip_collision" fromto="-0.05 0 0 0.05 0 0" size="0.05" mass="1.68"/>
-        <geom class="visual" type="mesh" mesh="hip_motor" material="frame" pos="0 0 0" euler="0 0 0"/>
+        <geom class="visual" type="mesh" mesh="hip_motor" material="frame" pos="0 0 0" euler="0 0 3.14159265"/>
         <body name="rear_right_upper_leg" pos="0 -0.110945 0">
           <joint name="rear_right_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           <geom class="collision" type="capsule" name="rear_right_upper_collision" fromto="0 0 0 0.025 0 -0.3205" size="0.04" mass="2.34"/>

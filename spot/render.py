@@ -12,10 +12,13 @@ spec = stage(mujoco.MjSpec.from_file(str(Path(__file__).parent / "spot.xml")))
 spec.visual.global_.fovy = 25
 m = spec.compile()
 d = mujoco.MjData(m)
-d.qpos[2], d.qpos[3] = 0.524, 1
+STAND = {"hip_y": 0.85, "knee": -1.65}
+d.qpos[3] = 1
 for n in ("front_left", "front_right", "rear_left", "rear_right"):
-    d.qpos[m.joint(f"{n}_hip_y").qposadr[0]] = 0.75
-    d.qpos[m.joint(f"{n}_knee").qposadr[0]] = -1.5
+    d.qpos[m.joint(f"{n}_hip_y").qposadr[0]] = STAND["hip_y"]
+    d.qpos[m.joint(f"{n}_knee").qposadr[0]] = STAND["knee"]
+mujoco.mj_forward(m, d)
+d.qpos[2] -= min(d.site_xpos[m.site(f"{n}_foot").id][2] for n in ("front_left", "front_right", "rear_left", "rear_right"))
 mujoco.mj_forward(m, d)
 opt = mujoco.MjvOption()
 opt.geomgroup[:] = 0

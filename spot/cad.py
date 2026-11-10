@@ -23,10 +23,11 @@ def save(part, name):
 def body_shell():
     """Yellow body: side profile with a flat top and both ends sloping down to the camera faces,
     extruded across the width, soft edges. Front/rear face recesses are cut in."""
-    L, top, bot, nose = 0.44, 0.065, -0.075, 0.36
+    L, top, bot, nose = 0.44, 0.065, -0.075, 0.41
     with BuildPart() as p:
-        with BuildSketch(Plane.XZ):
-            Polygon((-nose, top), (nose, top), (L, 0.0), (L - 0.02, bot), (-L + 0.02, bot), (-L, 0.0), align=None)
+        with BuildSketch(Plane.XZ):  # ends lean back ~15 deg above the middle, then tuck under
+            Polygon((-nose, top), (nose, top), (L, -0.02), (L - 0.025, bot), (-L + 0.025, bot), (-L, -0.02),
+                    align=None)
         extrude(amount=0.12, both=True)
         fillet(p.edges().filter_by(Axis.X), 0.02)   # long edges first
         fillet(p.edges().filter_by(Axis.Y), 0.012)
@@ -51,29 +52,34 @@ def body_core():
 
 
 def face(side):
-    """Camera face on the sloped front (side=+1) or rear (-1): dark panel with two lens pods, tilted with the slope."""
+    """Camera face on the front (side=+1) or rear (-1): large dark panel inside a thick yellow bezel,
+    leaning back with the end of the body; mesh grille in the middle, camera pods on one side."""
     import math
-    tilt = math.degrees(math.atan2(0.065, 0.08))
-    panel = rbox(0.014, 0.17, 0.075, 0.005).rotate(Axis.Y, side * tilt)
+    tilt = math.degrees(math.atan2(0.03, 0.085))
+    panel = rbox(0.012, 0.17, 0.07, 0.005)
+    pods = [rbox(0.008, 0.045, 0.02, 0.003, at=(0.009, 0.05, z)) for z in (0.02, 0.0, -0.02)]
     with BuildPart() as lens:
-        for y in (-0.05, 0.05):
-            with Locations((0.009, y, 0)):
-                Cylinder(0.013, 0.008, rotation=(0, 90, 0))
-    lens_part = lens.part.rotate(Axis.Y, side * tilt)
+        for z in (0.02, 0.0, -0.02):
+            with Locations((0.014, 0.05, z)):
+                Cylinder(0.006, 0.004, rotation=(0, 90, 0))
+    f = panel
+    for q in pods:
+        f = f + q
+    f = (f + lens.part).rotate(Axis.Y, tilt)
     if side < 0:
-        lens_part = lens_part.rotate(Axis.Z, 180)
-    return (panel + lens_part).translate((side * 0.405, 0, 0.03))
+        f = f.rotate(Axis.Z, 180)
+    return f.translate((side * 0.428, 0, 0.022))
 
 
 def hip_motor():
-    """Hip block: black boxy actuator housing under the body corner, abduction hub facing out."""
-    return rbox(0.13, 0.09, 0.085, 0.015, at=(0, 0.02, -0.01))
+    """Black hip housing outside the body corner (left side; mirrored for the right). The thigh hangs out of it."""
+    return rbox(0.15, 0.11, 0.1, 0.02, at=(0, 0.08, -0.005))
 
 
 def upper_leg():
     """Thigh: wide yellow outer cover (deep front-back, thin sideways) over a black inner frame,
     pivot at z=0, knee at (0.025, -0.3205)."""
-    cover = tube(0.04, -0.29, (0.15, 0.066), (0.1, 0.052), 0.022, 0.016)
+    cover = tube(-0.02, -0.29, (0.15, 0.066), (0.1, 0.052), 0.022, 0.016)  # top tucked under the hip housing
     frame = tube(0.02, -0.31, (0.09, 0.05), (0.06, 0.045), 0.015, 0.008)
     return cover, frame
 
@@ -86,7 +92,8 @@ def lower_leg():
             Cylinder(0.036, 0.045, rotation=(90, 0, 0))
         fillet(ft.edges(), 0.018)
     knee = drum(r=0.034, width=0.05, hub_r=0.014, hub_depth=0.006, edge=0.005)
-    return shin, ft.part, knee
+    hook = rbox(0.03, 0.028, 0.08, 0.008, at=(0.02, 0, -0.29), rot=(0, -28, 0))  # forward hook above the foot
+    return shin + hook, ft.part, knee
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ KNEE = (0.025, -0.3205)                             # knee (x, z) from the hip p
 SHIN = 0.3365                                       # knee to foot center
 FOOT_R = 0.036
 MASS = {"body": 32.7 - 4 * (1.68 + 2.34 + 0.35), "hip": 1.68, "upper": 2.34, "lower": 0.35}
-STAND = {"hip_y": 0.75, "knee": -1.5}               # default standing pose (body top ~0.61 m, the spec walking height)
+STAND = {"hip_y": 0.85, "knee": -1.65}              # standing pose: thighs leaning like in the BD videos, body top ~0.58 m
 
 
 def g(kind, cls="visual", **kw):
@@ -33,7 +33,7 @@ def leg(name, fx, s):
       <body name="{name}_hip" pos="{fx*HIP_X} {s*HIP_Y} 0">
         <joint name="{name}_hip_x" axis="1 0 0" range="-0.785 0.785"/>
         {g("capsule", "collision", name=f"{name}_hip_collision", fromto="-0.05 0 0 0.05 0 0", size="0.05", mass=MASS["hip"])}
-        {mesh("hip_motor", "frame", "0 0 0")}
+        {mesh("hip_motor", "frame", "0 0 0", flip)}
         <body name="{name}_upper_leg" pos="0 {s*HIP_OUT} 0">
           <joint name="{name}_hip_y" axis="0 1 0" range="-0.899 2.295"/>
           {g("capsule", "collision", name=f"{name}_upper_collision", fromto=f"0 0 0 {KNEE[0]} 0 {KNEE[1]}", size="0.04", mass=MASS["upper"])}
@@ -64,7 +64,7 @@ XML = f"""<!--
   <compiler angle="radian" autolimits="true" meshdir="meshes"/>
 
   <asset>
-    <material name="shell" rgba="0.95 0.78 0.1 1" specular="0.35" shininess="0.5"/>
+    <material name="shell" rgba="0.88 0.71 0.12 1" specular="0.3" shininess="0.45"/>
     <material name="frame" rgba="0.1 0.1 0.11 1" specular="0.3" shininess="0.4"/>
     <material name="face" rgba="0.04 0.04 0.05 1" specular="0.6" shininess="0.7"/>
     <material name="rubber" rgba="0.05 0.05 0.05 1" specular="0.05"/>
@@ -83,7 +83,7 @@ XML = f"""<!--
   </default>
 
   <worldbody>
-    <body name="body" pos="0 0 0.53">
+    <body name="body" pos="0 0 0.50">
       <freejoint name="floating_base_joint"/>
       {g("box", "collision", name="body_collision", size="0.42 0.117 0.075", mass=MASS["body"])}
       {mesh("body_shell", "shell")}
